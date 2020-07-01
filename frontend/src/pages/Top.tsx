@@ -1,5 +1,6 @@
 import React from 'react';
 import { Grid, TextField } from '@material-ui/core';
+import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import { SearchAppBar } from './Header';
@@ -29,6 +30,22 @@ const useStyles = makeStyles((theme: Theme) =>
         width: 'auto',
       },
     },
+    createButton: {
+      marginTop: theme.spacing(10),
+      [theme.breakpoints.up('sm')]: {
+        marginTop: theme.spacing(10),
+        width: 'auto',
+      },
+    },
+    searchButton: {
+      color: "#FFFFFF",
+      backgroundColor: "#81c784",
+      marginTop: theme.spacing(10),
+      [theme.breakpoints.up('sm')]: {
+        marginTop: theme.spacing(10),
+        width: 'auto',
+      },
+    }
   })
 );
 
@@ -52,12 +69,43 @@ export const CreatePage: React.FC = () => {
             Search someone's calendar
           </Typography>
         </Grid>
-        <TextField
-          id="outlined-basic"
-          label=""
-          placeholder="ID"
-          className={classes.searchField}
-        />
+        <Grid
+          item
+        >
+          <TextField
+            id="outlined-basic"
+            label=""
+            placeholder="ID"
+            className={classes.searchField}
+          />
+        </Grid>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={2}
+        >
+          <Grid item>
+            <Button 
+              variant="contained" 
+              color="primary"
+              className={classes.createButton}
+            >
+              Create
+            </Button>
+          </Grid>
+          <Grid item>
+          <Button 
+              variant="contained" 
+              color="inherit"
+              disableElevation={true}
+              className={classes.searchButton}
+            >
+              Search
+            </Button>
+          </Grid>
+        </Grid>
       </Grid>
     </div>
   )
