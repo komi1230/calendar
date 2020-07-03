@@ -31,6 +31,10 @@ const useStyles = makeStyles((theme: Theme) =>
       },
     },
     createButton: {
+      backgroundColor: "#4169e1",
+      '&:hover': {
+        backgroundColor: "#191970",
+      },
       marginTop: theme.spacing(10),
       [theme.breakpoints.up('sm')]: {
         marginTop: theme.spacing(10),
@@ -39,7 +43,10 @@ const useStyles = makeStyles((theme: Theme) =>
     },
     searchButton: {
       color: "#FFFFFF",
-      backgroundColor: "#81c784",
+      backgroundColor: "#ff9900",
+      '&:hover': {
+        backgroundColor: "#ff7700",
+      },
       marginTop: theme.spacing(10),
       [theme.breakpoints.up('sm')]: {
         marginTop: theme.spacing(10),
