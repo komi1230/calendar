@@ -56,6 +56,56 @@ const useStyles = makeStyles((theme: Theme) =>
   })
 );
 
+const TopMessage: React.FC = () => {
+  const classes = useStyles();
+  return (
+    <Typography
+      className={classes.mainMessage}
+    >
+      Search someone's calendar
+    </Typography>
+  )
+}
+
+const InputID: React.FC = () => {
+  const classes = useStyles();
+  return (
+    <TextField
+      id="outlined-basic"
+      label=""
+      placeholder="ID"
+      className={classes.searchField}
+    />
+  )
+}
+
+const CreateButton: React.FC = () => {
+  const classes = useStyles();
+  return (
+    <Button
+      variant="contained"
+      color="primary"
+      className={classes.createButton}
+    >
+      Create
+    </Button>
+  )
+}
+
+const SearchButton: React.FC = () => {
+  const classes = useStyles();
+  return (
+    <Button
+      variant="contained"
+      color="inherit"
+      disableElevation={true}
+      className={classes.searchButton}
+    >
+      Search
+    </Button>
+  )
+}
+
 export const CreatePage: React.FC = () => {
   const classes = useStyles();
   return (
@@ -67,24 +117,11 @@ export const CreatePage: React.FC = () => {
         justify="center"
         alignItems="center"
       >
-        <Grid
-          item
-        >
-          <Typography
-            className={classes.mainMessage}
-          >
-            Search someone's calendar
-          </Typography>
+        <Grid item>
+          <TopMessage />
         </Grid>
-        <Grid
-          item
-        >
-          <TextField
-            id="outlined-basic"
-            label=""
-            placeholder="ID"
-            className={classes.searchField}
-          />
+        <Grid item>
+          <InputID />
         </Grid>
         <Grid
           container
@@ -94,23 +131,10 @@ export const CreatePage: React.FC = () => {
           spacing={2}
         >
           <Grid item>
-            <Button 
-              variant="contained" 
-              color="primary"
-              className={classes.createButton}
-            >
-              Create
-            </Button>
+            <CreateButton />
           </Grid>
           <Grid item>
-          <Button 
-              variant="contained" 
-              color="inherit"
-              disableElevation={true}
-              className={classes.searchButton}
-            >
-              Search
-            </Button>
+            <SearchButton />
           </Grid>
         </Grid>
       </Grid>
