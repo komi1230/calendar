@@ -1,3 +1,9 @@
-import React from 'react';
+import React, { useState } from 'react';
 
-export const Calendar: string = "hoge";
+export const Table: React.FC = () => {
+  return (
+    <>
+      hoge
+    </>
+  )
+};
