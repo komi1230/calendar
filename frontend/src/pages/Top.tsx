@@ -65,7 +65,7 @@ const TopMessage: React.FC = () => {
       Search someone's calendar
     </Typography>
   )
-}
+};
 
 const InputID: React.FC = () => {
   const classes = useStyles();
@@ -77,7 +77,7 @@ const InputID: React.FC = () => {
       className={classes.searchField}
     />
   )
-}
+};
 
 const CreateButton: React.FC = () => {
   const classes = useStyles();
@@ -90,7 +90,7 @@ const CreateButton: React.FC = () => {
       Create
     </Button>
   )
-}
+};
 
 const SearchButton: React.FC = () => {
   const classes = useStyles();
@@ -104,7 +104,7 @@ const SearchButton: React.FC = () => {
       Search
     </Button>
   )
-}
+};
 
 export const CreatePage: React.FC = () => {
   const classes = useStyles();
@@ -140,4 +140,4 @@ export const CreatePage: React.FC = () => {
       </Grid>
     </div>
   )
-}
+};
