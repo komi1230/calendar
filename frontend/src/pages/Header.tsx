@@ -67,7 +67,7 @@ const useStyles = makeStyles((theme: Theme) =>
   }),
 );
 
-export function SearchAppBar() {
+export const SearchAppBar:React.FC = () => {
   const classes = useStyles();
 
   return (
