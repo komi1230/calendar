@@ -167,7 +167,7 @@ export const Table: React.FC = () => {
         <Grid item>
           <MonthHeader year={2020} month={6} />
         </Grid>
-        <Grid container alignItems="center" justify="center">
+        <Grid container direction="column" alignItems="center" justify="center">
           <Grid item>
             <WeekTiles dates={ds0} open={selectedWeek[0]} onClick={handleClick(0)}/>
           </Grid>
