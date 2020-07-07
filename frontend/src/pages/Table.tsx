@@ -106,41 +106,54 @@ const Tile: React.FC<TileProps> = (props) => {
 
 interface WeekTilesProps {
   dates: number[],
+  open: boolean,
+  onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
 }
 
 const WeekTiles: React.FC<WeekTilesProps> = (props) => {
   const weekDays: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-
-  const [open, setOpen] = useState(false);
-  const handleClick = () => {
-    setOpen(!open);
-  };
+  const [selectedDate, setSelectedDate] = useState(0);
 
   return (
-    <List>
-      <ListItem>
+    <>
+    <div onClick={props.onClick}>
       {props.dates.map((d: number, idx: number) => {
         return (
           <Tile
             day={weekDays[idx]} 
             date={d} 
-            onClick={handleClick}
+            onClick={() => setSelectedDate(d)}
             key={d}  // unique key
           />
         )
       })}
-      </ListItem>
-      <Collapse in={open} timeout="auto" disableStrictModeCompat>
-        <Box bgcolor="text.secondary" color="background.paper">
-          hogehoge
+    </div>
+      <Collapse in={props.open} timeout="auto" disableStrictModeCompat>
+        <Box bgcolor="text.disabled" color="background.paper">
+          Clicked date: {selectedDate}
         </Box>
       </Collapse>
-    </List>
+    </>
   )
 }
 
 export const Table: React.FC = () => {
-  const ds = [30, 31, 1, 2, 3, 4, 5]
+  const ds0 = [30, 31, 1, 2, 3, 4, 5]
+  const ds1 = [6, 7, 8, 9, 10, 11, 12]
+  const ds2 = [13, 14, 15, 16, 17, 18, 19]
+  const ds3 = [20, 21, 22, 23, 24, 25, 26]
+  const ds4 = [27, 28, 29, 30, 1, 2, 3]
+
+  const [selectedWeek, setSelectedWeek] = useState([false, false, false, false, false]);
+  function handleClick(idx: number) {
+    return (
+    () => {
+      let lst = new Array(5).fill(false);
+      lst[idx] = true
+      setSelectedWeek(lst)
+    })
+  }
+
   return (
     <>
       <SearchAppBar />
@@ -155,7 +168,19 @@ export const Table: React.FC = () => {
         </Grid>
         <Grid container alignItems="center" justify="center">
           <Grid item>
-            <WeekTiles dates={ds}/>
+            <WeekTiles dates={ds0} open={selectedWeek[0]} onClick={handleClick(0)}/>
+          </Grid>
+          <Grid item>
+            <WeekTiles dates={ds1} open={selectedWeek[1]} onClick={handleClick(1)}/>
+          </Grid>
+          <Grid item>
+            <WeekTiles dates={ds2} open={selectedWeek[2]} onClick={handleClick(2)}/>
+          </Grid>
+          <Grid item>
+            <WeekTiles dates={ds3} open={selectedWeek[3]} onClick={handleClick(3)}/>
+          </Grid>
+          <Grid item>
+            <WeekTiles dates={ds4} open={selectedWeek[4]} onClick={handleClick(4)}/>
           </Grid>
         </Grid>
       </Grid>
