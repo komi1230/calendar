@@ -20,7 +20,8 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
     },
     tile: {
-      maxWidth: '30px', maxHeight: '50px', minWidth: '50px', minHeight: '30px',
+      minWidth: '40px',
+      maxHeight: '50px', 
       borderRadius: '0'
     },
     tileDay: {
