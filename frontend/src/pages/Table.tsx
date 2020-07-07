@@ -2,6 +2,9 @@ import React, { useState } from 'react';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
+import List from '@material-ui/core/List';
+import ListItem from '@material-ui/core/ListItem';
+import Collapse from '@material-ui/core/Collapse';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
@@ -29,12 +32,12 @@ const useStyles = makeStyles((theme: Theme) =>
       fontSize: "16px"
     }
   })
-)
+);
 
 interface CalendarPageProps {
   year: number,
   month: number,
-}
+};
 
 const MonthHeader: React.FC<CalendarPageProps> = (props) => {
   const classes = useStyles();
@@ -65,12 +68,12 @@ const MonthHeader: React.FC<CalendarPageProps> = (props) => {
 interface TileProps {
   day: string,
   date: number,
-  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,   // modify event type
-}
+  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+};
 
 const Tile: React.FC<TileProps> = (props) => {
-  const day = props.day;
-  const date = props.date;
+  const day: string = props.day;
+  const date: number = props.date;
   const onClick = props.onClick;
   const classes = useStyles();
   return (
@@ -99,9 +102,45 @@ const Tile: React.FC<TileProps> = (props) => {
       </Grid>
     </Button>
   )
+};
+
+interface WeekTilesProps {
+  dates: number[],
+}
+
+const WeekTiles: React.FC<WeekTilesProps> = (props) => {
+  const weekDays: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
+  const [open, setOpen] = useState(false);
+  const handleClick = () => {
+    setOpen(!open);
+  };
+
+  return (
+    <List>
+      <ListItem>
+      {props.dates.map((d: number, idx: number) => {
+        return (
+          <Tile
+            day={weekDays[idx]} 
+            date={d} 
+            onClick={handleClick}
+            key={d}  // unique key
+          />
+        )
+      })}
+      </ListItem>
+      <Collapse in={open} timeout="auto" disableStrictModeCompat>
+        <Box bgcolor="text.secondary" color="background.paper">
+          hogehoge
+        </Box>
+      </Collapse>
+    </List>
+  )
 }
 
 export const Table: React.FC = () => {
+  const ds = [30, 31, 1, 2, 3, 4, 5]
   return (
     <>
       <SearchAppBar />
@@ -116,25 +155,7 @@ export const Table: React.FC = () => {
         </Grid>
         <Grid container alignItems="center" justify="center">
           <Grid item>
-            <Tile day="Mon" date={12} onClick={() => alert("hoge")} />
-          </Grid>
-          <Grid item>
-            <Tile day="Tue" date={13} onClick={() => alert("hoge")} />
-          </Grid>
-          <Grid item>
-            <Tile day="Wed" date={14} onClick={() => alert("hoge")} />
-          </Grid>
-          <Grid item>
-            <Tile day="Thu" date={15} onClick={() => alert("hoge")} />
-          </Grid>
-          <Grid item>
-            <Tile day="Fri" date={16} onClick={() => alert("hoge")} />
-          </Grid>
-          <Grid item>
-            <Tile day="Sat" date={17} onClick={() => alert("hoge")} />
-          </Grid>
-          <Grid item>
-            <Tile day="Sun" date={18} onClick={() => alert("hoge")} />
+            <WeekTiles dates={ds}/>
           </Grid>
         </Grid>
       </Grid>
