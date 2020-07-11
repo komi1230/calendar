@@ -1,20 +1,39 @@
-use actix_web::{web, App, HttpRequest, HttpServer, Responder};
-use listenfd::ListenFd;
+use actix_web::{web, App, HttpServer, Result};
+use chrono::{DateTime, Utc};
+use serde::Deserialize;
 
-async fn index(_: HttpRequest) -> impl Responder {
-    "hogehgehoge"
+#[derive(Deserialize)]
+struct CreateUserRequest {
+    userID: String,
+    registerDate: String,
+}
+
+#[derive(Deserialize)]
+struct CreateUserResponse {
+    isExisted: bool,
+}
+
+#[derive(Deserialize)]
+struct SearchUserResponse {
+    userID: String,
+}
+
+#[derive(Deserialize)]
+struct Schedule {
+    userID: String,
+    registerDate: String,
+    from: String,
+    to: String,
+}
+
+async fn create(info: web::Json<CreateUserRequest>) -> Result<String> {
+    Ok(format!("Welcome {}!", info.userID))
 }
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
-    let mut listenfd = ListenFd::from_env();
-    let mut server = HttpServer::new(|| App::new().route("/", web::get().to(index)));
-
-    server = if let Some(l) = listenfd.take_tcp_listener(0).unwrap() {
-        server.listen(l)?
-    } else {
-        server.bind("127.0.0.1:3000")?
-    };
-
-    server.run().await
+    HttpServer::new(|| App::new().route("/", web::post().to(create)))
+        .bind("127.0.0.1:8088")?
+        .run()
+        .await
 }
