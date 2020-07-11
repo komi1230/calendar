@@ -10,12 +10,13 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-    working_directory: /home/circleci/calendar/backend/src
+    working_directory: /work
     steps:
       - checkout
       - run:
           name: check directory
           command: ls && pwd
+          working_directory: /work/calendar/backend
       - run:
           name: rustup version
           command: rustup --version
@@ -25,15 +26,15 @@ jobs:
       - run:
           name: fmt
           command: cargo fmt -- --check
-      - restore_cache:
-          keys:
-            - v1-cargo-lock-{{ checksum "Cargo.lock" }}
+          working_directory: /work/calendar/backend
       - run:
           name: build
           command: cargo build
+          working_directory: /work/calendar/backend
       - run:
           name: lint
           command: cargo clippy -- -D warnings
+          working_directory: /work/calendars/backend
       - save_cache:
           key: v1-cargo-lock-{{ checksum "Cargo.lock" }}
           paths:
@@ -42,3 +43,4 @@ jobs:
       - run:
           name: test
           command: cargo test
+          working_directory: /work/calendar/backend
