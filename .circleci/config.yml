@@ -34,12 +34,7 @@ jobs:
       - run:
           name: lint
           command: cargo clippy -- -D warnings
-          working_directory: ~/calendars/backend
-      - save_cache:
-          key: v1-cargo-lock-{{ checksum "Cargo.lock" }}
-          paths:
-            - "/usr/local/cargo/registry"
-            - "target"
+          working_directory: ~/calendar/backend
       - run:
           name: test
           command: cargo test
