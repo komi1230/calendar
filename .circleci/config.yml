@@ -10,12 +10,12 @@ jobs:
       # documented at https://circleci.com/docs/2.0/circleci-images/
       # - image: circleci/postgres:9.4
 
-    working_directory: /home/circleci/calendar/backend/
+    working_directory: /home/circleci/calendar/backend/src
     steps:
       - checkout
       - run:
-          name: change directory
-          command: cd backend/
+          name: check directory
+          command: ls && pwd
       - run:
           name: rustup version
           command: rustup --version
