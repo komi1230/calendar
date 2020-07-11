@@ -14,6 +14,9 @@ jobs:
     steps:
       - checkout
       - run:
+          name: check directory
+          command: ls && pwd
+      - run:
           name: rustup version
           command: rustup --version
       - run:
