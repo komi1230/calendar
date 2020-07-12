@@ -31,10 +31,10 @@ jobs:
           name: build
           command: cargo build
           working_directory: ~/calendar/backend
-      - run:
-          name: lint
-          command: cargo clippy -- -D warnings
-          working_directory: ~/calendar/backend
+#      - run:
+#          name: lint
+#          command: cargo clippy -- -D warnings
+#          working_directory: ~/calendar/backend
       - run:
           name: test
           command: cargo test
