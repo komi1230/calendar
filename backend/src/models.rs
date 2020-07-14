@@ -1,15 +1,16 @@
+use chrono::NaiveDateTime;
 use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize, Queryable, Insertable)]
 pub struct User {
     ID: String,
-    registerDate: String,
+    registerDate: Option<NaiveDateTime>,
 }
 
 #[derive(Deserialize, Serialize, Queryable, Insertable)]
 struct Schedule {
-    userID: String,
+    userID: Option<String>,
     registerDate: String,
-    from: String,
-    to: String,
+    from: Option<NaiveDateTime>,
+    to: Option<NaiveDateTime>,
 }

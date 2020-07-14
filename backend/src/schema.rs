@@ -1,4 +1,11 @@
 table! {
+    users (username) {
+        username -> Text,
+        registerdate -> Nullable<Timestamp>,
+    }
+}
+
+table! {
     schedule (id) {
         id -> Nullable<Text>,
         username -> Text,
@@ -7,14 +14,4 @@ table! {
     }
 }
 
-table! {
-    users (username) {
-        username -> Text,
-        registerdate -> Nullable<Timestamp>,
-    }
-}
-
-allow_tables_to_appear_in_same_query!(
-    schedule,
-    users,
-);
+allow_tables_to_appear_in_same_query!(schedule, users,);
