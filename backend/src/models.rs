@@ -28,12 +28,12 @@ impl User {
 
     pub fn search_outdated(deadline: NaiveDateTime, conn: &PgConnection) -> Result<Vec<User>> {
         all_users
-            .filter(registerdate.le(deadline))
+            .filter(users::registerdate.le(deadline))
             .load::<User>(conn)
     }
 
     pub fn delete_outdated(deadline: NaiveDateTime, conn: &PgConnection) -> Result<usize> {
-        diesel::delete(all_users.filter(registerdate.le(deadline))).execute(conn)
+        diesel::delete(all_users.filter(users::registerdate.le(deadline))).execute(conn)
     }
 }
 
@@ -79,20 +79,18 @@ impl Schedule {
         };
 
         all_schedule
-            .filter(username.eq(username))
-            .filter(fromtime.ge(this_month))
-            .filter(fromtime.lt(next_month))
+            .filter(schedule::username.eq(username))
+            .filter(schedule::fromtime.ge(this_month))
+            .filter(schedule::fromtime.lt(next_month))
             .load::<Schedule>(conn)
     }
 
     pub fn delete(content: Content, conn: &PgConnection) -> Result<usize> {
         diesel::delete(
-            all_schedule.filter(
-                username
-                    .eq(content.username)
-                    .filter(fromtime.eq(content.fromtime))
-                    .filter(totime.eq(content.totime)),
-            ),
+            all_schedule
+                .filter(schedule::username.eq(content.username))
+                .filter(schedule::fromtime.eq(content.fromtime))
+                .filter(schedule::totime.eq(content.totime)),
         )
         .execute(conn)
     }
