@@ -34,7 +34,7 @@ fn establish_connection() -> PgConnection {
 }
 
 async fn create(info: web::Json<CreateUserRequest>) -> impl Responder {
-    Ok(format!("Welcome {}!", info.userID))
+    format!("Welcome {}!", info.userID)
 }
 
 #[actix_rt::main]
