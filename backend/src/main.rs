@@ -1,11 +1,19 @@
-use actix_web::{web, App, HttpServer, Result};
+#[macro_use]
+extern crate diesel;
+extern crate dotenv;
+
+use diesel::pg::PgConnection;
+use diesel::prelude::*;
+use dotenv::dotenv;
+
+use actix_web::{web, App, HttpServer, Responder};
 use chrono::{DateTime, Utc};
 use serde::Deserialize;
+use std::env;
 
 #[derive(Deserialize)]
 struct CreateUserRequest {
     userID: String,
-    registerDate: String,
 }
 
 #[derive(Deserialize)]
@@ -18,15 +26,14 @@ struct SearchUserResponse {
     userID: String,
 }
 
-#[derive(Deserialize)]
-struct Schedule {
-    userID: String,
-    registerDate: String,
-    from: String,
-    to: String,
+fn establish_connection() -> PgConnection {
+    dotenv().ok();
+
+    let database_url = env::var("DATABASE_URL").expect("DATABASE_URL has to be set.");
+    PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
 }
 
-async fn create(info: web::Json<CreateUserRequest>) -> Result<String> {
+async fn create(info: web::Json<CreateUserRequest>) -> impl Responder {
     Ok(format!("Welcome {}!", info.userID))
 }
 
