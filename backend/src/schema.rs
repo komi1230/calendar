@@ -1,12 +1,12 @@
 table! {
-    users (username) {
+    users {
         username -> Text,
         registerdate -> Nullable<Timestamp>,
     }
 }
 
 table! {
-    schedule (id) {
+    schedule {
         id -> Nullable<Text>,
         username -> Text,
         fromtime -> Nullable<Timestamp>,
