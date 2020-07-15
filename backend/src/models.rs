@@ -39,14 +39,14 @@ impl User {
 
 #[derive(Deserialize, Serialize, Queryable, Insertable)]
 #[table_name = "schedule"]
-struct Schedule {
+pub struct Schedule {
     id: Option<String>,
     username: String,
     fromtime: Option<NaiveDateTime>,
     totime: Option<NaiveDateTime>,
 }
 
-struct Content {
+pub struct Content {
     username: String,
     fromtime: NaiveDateTime,
     totime: NaiveDateTime,
