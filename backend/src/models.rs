@@ -65,23 +65,9 @@ impl Schedule {
             .execute(conn)
     }
 
-    pub fn get_month_schedule(
-        username: String,
-        year: i32,
-        month: u32,
-        conn: &PgConnection,
-    ) -> Result<Vec<Schedule>> {
-        let this_month = Self::make_date(year, month, 1);
-        let next_month = if month == 12 {
-            Self::make_date(year + 1, 1, 1)
-        } else {
-            Self::make_date(year, month + 1, 1)
-        };
-
+    pub fn get_schedule(username: String, conn: &PgConnection) -> Result<Vec<Schedule>> {
         all_schedule
             .filter(schedule::username.eq(username))
-            .filter(schedule::fromtime.ge(this_month))
-            .filter(schedule::fromtime.lt(next_month))
             .load::<Schedule>(conn)
     }
 
