@@ -13,7 +13,10 @@ struct UserData {
 }
 
 #[post("/create")]
-pub async fn create_user(info: web::Json<UserData>, conn: &PgConnection) -> impl Responder {
+pub async fn create_user(
+    info: web::Json<UserData>,
+    conn: web::Data<&PgConnection>,
+) -> impl Responder {
     let res = User::insert(info.username, conn);
 
     match res {
@@ -23,7 +26,10 @@ pub async fn create_user(info: web::Json<UserData>, conn: &PgConnection) -> impl
 }
 
 #[post("/search")]
-pub async fn search_user(info: web::Json<UserData>, conn: &PgConnection) -> impl Responder {
+pub async fn search_user(
+    info: web::Json<UserData>,
+    conn: web::Data<&PgConnection>,
+) -> impl Responder {
     let res = Schedule::get_schedule(info.username, conn);
 
     match res {
@@ -33,7 +39,10 @@ pub async fn search_user(info: web::Json<UserData>, conn: &PgConnection) -> impl
 }
 
 #[get("/user/{username}")]
-pub async fn schedule_content(info: web::Path<UserData>, conn: &PgConnection) -> impl Responder {
+pub async fn schedule_content(
+    info: web::Path<UserData>,
+    conn: web::Data<&PgConnection>,
+) -> impl Responder {
     let res = Schedule::get_schedule(info.username, conn);
 
     match res {
