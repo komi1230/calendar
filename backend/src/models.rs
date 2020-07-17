@@ -8,7 +8,7 @@ use crate::schema::schedule::dsl::{
 use crate::schema::users::dsl::{registerdate as all_registerdate, username as all_users_username};
 use crate::schema::{schedule, users};
 
-#[derive(Deserialize, Serialize, Queryable)]
+#[derive(Deserialize, Serialize, Queryable, Insertable)]
 pub struct User {
     username: String,
     registerdate: Option<NaiveDateTime>,
@@ -36,7 +36,7 @@ impl User {
     }
 }
 
-#[derive(Deserialize, Serialize, Queryable)]
+#[derive(Deserialize, Serialize, Queryable, Insertable)]
 pub struct Schedule {
     id: Option<String>,
     username: String,
@@ -63,7 +63,7 @@ impl Schedule {
             .execute(conn)
     }
 
-    pub fn get_schedule(username: String, conn: &PgConnection) -> QueryResult<Vec<Schedule>> {
+    pub fn get_schedule(username: String, conn: &PgConnection) -> QueryResult<Vec<Self>> {
         all_schedule
             .filter(schedule::username.eq(username))
             .load::<Schedule>(conn)
