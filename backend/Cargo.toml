@@ -10,7 +10,9 @@ edition = "2018"
 actix-web = "2.0.0"
 actix-rt = "1.1.1"
 listenfd = "0.3.3"
-diesel = { version = "1.4.5", features = ["postgres", "chrono"] }
+diesel = { version = "1.4.5", features = ["postgres", "chrono", "r2d2"] }
 dotenv = "0.15.0"
 serde = "1.0.114"
 chrono = { version = "0.4.13", features = ["serde"] }
+r2d2 = "0.8.9"
+r2d2_postgres = "0.16.0"
