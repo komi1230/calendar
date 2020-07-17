@@ -2,10 +2,8 @@ use chrono::{NaiveDate, NaiveDateTime, NaiveTime};
 use diesel::{self, prelude::*};
 use serde::{Deserialize, Serialize};
 
-use crate::schema::schedule::dsl::{
-    fromtime as all_fromtime, schedule as all_schedule, username as all_schedule_username,
-};
-use crate::schema::users::dsl::{registerdate as all_registerdate, username as all_users_username};
+use crate::schema::schedule::dsl::schedule as all_schedule;
+
 use crate::schema::{schedule, users};
 
 #[derive(Deserialize, Serialize, Queryable, Insertable)]

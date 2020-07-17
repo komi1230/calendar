@@ -1,5 +1,5 @@
-use crate::models::{Content, Schedule, User};
-use actix_web::{get, post, web, HttpServer, Responder};
+use crate::models::{Schedule, User};
+use actix_web::{get, post, web, Responder};
 use diesel::pg::PgConnection;
 use serde::{Deserialize, Serialize};
 
