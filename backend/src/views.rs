@@ -1,6 +1,7 @@
 use crate::models::{Content, Schedule, User};
 use actix_web::{get, post, web, HttpServer, Responder};
 use diesel::pg::PgConnection;
+use serde::{Deserialize, Serialize};
 
 #[derive(Deserialize, Serialize)]
 struct Info {
@@ -34,7 +35,7 @@ pub async fn search_user(
 
     match res {
         Ok(contents) => web::Json(contents),
-        Err(_) => web::Json(Info { result: false }),
+        Err(_) => panic!("Not found schedule"),
     }
 }
 
@@ -47,6 +48,6 @@ pub async fn schedule_content(
 
     match res {
         Ok(contents) => web::Json(contents),
-        Err(_) => web::Json(Info { result: false }),
+        Err(_) => panic!("Not found schedule"),
     }
 }
