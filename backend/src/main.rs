@@ -3,11 +3,10 @@ use diesel::prelude::*;
 use dotenv::dotenv;
 
 use actix_web::{get, web, App, HttpServer, Responder};
-use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use std::env;
 
-use crate::views::{create_user, schedule_content, search_user};
+use calendar::views::{create_user, schedule_content, search_user};
 
 #[derive(Deserialize)]
 struct CreateUserRequest {
@@ -40,7 +39,7 @@ async fn hello() -> impl Responder {
 async fn main() -> std::io::Result<()> {
     let conn = web::Data::new(establish_connection());
 
-    let app = || {
+    let app = move || {
         App::new()
             .data(&conn)
             .service(create_user)
