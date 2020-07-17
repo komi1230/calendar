@@ -9,7 +9,7 @@ struct Info {
 }
 
 #[derive(Deserialize, Serialize)]
-struct UserData {
+pub struct UserData {
     username: String,
 }
 

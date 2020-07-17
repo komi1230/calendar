@@ -6,7 +6,7 @@ table! {
 }
 
 table! {
-    schedule (id) {
+    schedules (id) {
         id -> Nullable<Text>,
         username -> Text,
         fromtime -> Nullable<Timestamp>,
@@ -14,4 +14,4 @@ table! {
     }
 }
 
-allow_tables_to_appear_in_same_query!(schedule, users,);
+allow_tables_to_appear_in_same_query!(schedules, users,);

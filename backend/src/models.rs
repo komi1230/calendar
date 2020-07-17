@@ -1,10 +1,10 @@
-use chrono::{NaiveDate, NaiveDateTime, NaiveTime};
+use chrono::NaiveDateTime;
 use diesel::{self, prelude::*};
 use serde::{Deserialize, Serialize};
 
-use crate::schema::schedule::dsl::schedule as all_schedule;
+use crate::schema::schedules::dsl::schedules as all_schedule;
 
-use crate::schema::{schedule, users};
+use crate::schema::{schedules, users};
 
 #[derive(Deserialize, Serialize, Queryable, Insertable)]
 pub struct User {
@@ -50,36 +50,30 @@ pub struct Content {
 
 impl Schedule {
     pub fn insert(content: Content, conn: &PgConnection) -> QueryResult<usize> {
-        let schedule_data = Schedule {
+        let schedules_data = Schedule {
             id: None,
             username: content.username,
             fromtime: Some(content.fromtime),
             totime: Some(content.totime),
         };
-        diesel::insert_into(schedule::table)
-            .values(schedule_data)
+        diesel::insert_into(schedules::table)
+            .values(schedules_data)
             .execute(conn)
     }
 
     pub fn get_schedule(username: String, conn: &PgConnection) -> QueryResult<Vec<Self>> {
         all_schedule
-            .filter(schedule::username.eq(username))
+            .filter(schedules::username.eq(username))
             .load::<Schedule>(conn)
     }
 
     pub fn delete(content: Content, conn: &PgConnection) -> QueryResult<usize> {
         diesel::delete(
             all_schedule
-                .filter(schedule::username.eq(content.username))
-                .filter(schedule::fromtime.eq(content.fromtime))
-                .filter(schedule::totime.eq(content.totime)),
+                .filter(schedules::username.eq(content.username))
+                .filter(schedules::fromtime.eq(content.fromtime))
+                .filter(schedules::totime.eq(content.totime)),
         )
         .execute(conn)
-    }
-
-    fn make_date(year: i32, month: u32, date: u32) -> NaiveDateTime {
-        let tmp_date = NaiveDate::from_ymd(year, month, 1);
-        let tmp_time = NaiveTime::from_hms_milli(0, 0, 0, 0);
-        NaiveDateTime::new(tmp_date, tmp_time)
     }
 }
