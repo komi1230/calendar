@@ -1,15 +1,13 @@
-#[macro_use]
-extern crate diesel;
-extern crate dotenv;
-
 use diesel::pg::PgConnection;
 use diesel::prelude::*;
 use dotenv::dotenv;
 
-use actix_web::{web, App, HttpServer, Responder};
+use actix_web::{get, web, App, HttpServer, Responder};
 use chrono::{DateTime, Utc};
 use serde::Deserialize;
 use std::env;
+
+use crate::views::{create_user, schedule_content, search_user};
 
 #[derive(Deserialize)]
 struct CreateUserRequest {
@@ -33,14 +31,23 @@ fn establish_connection() -> PgConnection {
     PgConnection::establish(&database_url).expect(&format!("Error connecting to {}", database_url))
 }
 
-async fn create(info: web::Json<CreateUserRequest>) -> impl Responder {
-    format!("Welcome {}!", info.userID)
+#[get("/")]
+async fn hello() -> impl Responder {
+    "hello"
 }
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
-    HttpServer::new(|| App::new().route("/", web::post().to(create)))
-        .bind("127.0.0.1:8088")?
-        .run()
-        .await
+    let conn = web::Data::new(establish_connection());
+
+    let app = || {
+        App::new()
+            .data(&conn)
+            .service(create_user)
+            .service(search_user)
+            .service(schedule_content)
+            .service(hello)
+    };
+
+    HttpServer::new(app).bind("127.0.0.1:8088")?.run().await
 }
