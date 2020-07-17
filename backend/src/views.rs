@@ -8,7 +8,7 @@ struct Info {
     result: bool,
 }
 
-#[derive(Deserialize)]
+#[derive(Deserialize, Serialize)]
 struct UserData {
     username: String,
 }
@@ -18,7 +18,7 @@ pub async fn create_user(
     info: web::Json<UserData>,
     conn: web::Data<&PgConnection>,
 ) -> impl Responder {
-    let res = User::insert(info.username, conn);
+    let res = User::insert(info.username.clone(), &conn);
 
     match res {
         Ok(_) => web::Json(Info { result: true }),
@@ -31,7 +31,7 @@ pub async fn search_user(
     info: web::Json<UserData>,
     conn: web::Data<&PgConnection>,
 ) -> impl Responder {
-    let res = Schedule::get_schedule(info.username, conn);
+    let res = Schedule::get_schedule(info.username.clone(), &conn);
 
     match res {
         Ok(contents) => web::Json(contents),
@@ -44,7 +44,7 @@ pub async fn schedule_content(
     info: web::Path<UserData>,
     conn: web::Data<&PgConnection>,
 ) -> impl Responder {
-    let res = Schedule::get_schedule(info.username, conn);
+    let res = Schedule::get_schedule(info.username.clone(), &conn);
 
     match res {
         Ok(contents) => web::Json(contents),
