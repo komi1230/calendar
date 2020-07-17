@@ -3,20 +3,19 @@ use diesel::{self, prelude::*};
 use serde::{Deserialize, Serialize};
 
 use crate::schema::schedule::dsl::{
-    fromtime as all_fromtime, schedule as all_schedule, username as all_username,
+    fromtime as all_fromtime, schedule as all_schedule, username as all_schedule_username,
 };
-use crate::schema::users::dsl::{registerdate as all_registerdate, username as all_username};
+use crate::schema::users::dsl::{registerdate as all_registerdate, username as all_users_username};
 use crate::schema::{schedule, users};
 
-#[derive(Deserialize, Serialize, Queryable, Insertable)]
-#[table_name = "users"]
+#[derive(Deserialize, Serialize, Queryable)]
 pub struct User {
     username: String,
     registerdate: Option<NaiveDateTime>,
 }
 
 impl User {
-    pub fn insert(username: String, conn: &PgConnection) -> Result<usize> {
+    pub fn insert(username: String, conn: &PgConnection) -> QueryResult<usize> {
         let user_data = User {
             username: username,
             registerdate: None,
@@ -26,19 +25,18 @@ impl User {
             .execute(conn)
     }
 
-    pub fn search_outdated(deadline: NaiveDateTime, conn: &PgConnection) -> Result<Vec<User>> {
-        all_users
+    pub fn search_outdated(deadline: NaiveDateTime, conn: &PgConnection) -> QueryResult<Vec<User>> {
+        users::table
             .filter(users::registerdate.le(deadline))
             .load::<User>(conn)
     }
 
-    pub fn delete_outdated(deadline: NaiveDateTime, conn: &PgConnection) -> Result<usize> {
-        diesel::delete(all_users.filter(users::registerdate.le(deadline))).execute(conn)
+    pub fn delete_outdated(deadline: NaiveDateTime, conn: &PgConnection) -> QueryResult<usize> {
+        diesel::delete(users::table.filter(users::registerdate.le(deadline))).execute(conn)
     }
 }
 
-#[derive(Deserialize, Serialize, Queryable, Insertable)]
-#[table_name = "schedule"]
+#[derive(Deserialize, Serialize, Queryable)]
 pub struct Schedule {
     id: Option<String>,
     username: String,
@@ -53,25 +51,25 @@ pub struct Content {
 }
 
 impl Schedule {
-    pub fn insert(content: Content, conn: &PgConnection) -> Result<usize> {
+    pub fn insert(content: Content, conn: &PgConnection) -> QueryResult<usize> {
         let schedule_data = Schedule {
             id: None,
             username: content.username,
             fromtime: Some(content.fromtime),
             totime: Some(content.totime),
         };
-        dielse::insert_into(schedule::table)
+        diesel::insert_into(schedule::table)
             .values(schedule_data)
             .execute(conn)
     }
 
-    pub fn get_schedule(username: String, conn: &PgConnection) -> Result<Vec<Schedule>> {
+    pub fn get_schedule(username: String, conn: &PgConnection) -> QueryResult<Vec<Schedule>> {
         all_schedule
             .filter(schedule::username.eq(username))
             .load::<Schedule>(conn)
     }
 
-    pub fn delete(content: Content, conn: &PgConnection) -> Result<usize> {
+    pub fn delete(content: Content, conn: &PgConnection) -> QueryResult<usize> {
         diesel::delete(
             all_schedule
                 .filter(schedule::username.eq(content.username))
