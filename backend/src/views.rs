@@ -1,7 +1,8 @@
-use crate::models::{Schedule, User};
 use actix_web::{get, post, web, Responder};
-use diesel::pg::PgConnection;
 use serde::{Deserialize, Serialize};
+
+use crate::connection::DbPool;
+use crate::models::{Schedule, User};
 
 #[derive(Deserialize, Serialize)]
 struct Info {
@@ -14,10 +15,8 @@ pub struct UserData {
 }
 
 #[post("/create")]
-pub async fn create_user(
-    info: web::Json<UserData>,
-    conn: web::Data<&PgConnection>,
-) -> impl Responder {
+pub async fn create_user(info: web::Json<UserData>, pool: web::Data<DbPool>) -> impl Responder {
+    let conn = pool.get().expect("couldn't get db connection from pool");
     let res = User::insert(info.username.clone(), &conn);
 
     match res {
@@ -27,10 +26,8 @@ pub async fn create_user(
 }
 
 #[post("/search")]
-pub async fn search_user(
-    info: web::Json<UserData>,
-    conn: web::Data<&PgConnection>,
-) -> impl Responder {
+pub async fn search_user(info: web::Json<UserData>, pool: web::Data<DbPool>) -> impl Responder {
+    let conn = pool.get().expect("couldn't get db connection from pool");
     let res = Schedule::get_schedule(info.username.clone(), &conn);
 
     match res {
@@ -42,8 +39,9 @@ pub async fn search_user(
 #[get("/user/{username}")]
 pub async fn schedule_content(
     info: web::Path<UserData>,
-    conn: web::Data<&PgConnection>,
+    pool: web::Data<DbPool>,
 ) -> impl Responder {
+    let conn = pool.get().expect("couldn't get db connection from pool");
     let res = Schedule::get_schedule(info.username.clone(), &conn);
 
     match res {
