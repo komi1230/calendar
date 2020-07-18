@@ -17,10 +17,13 @@ async fn main() -> std::io::Result<()> {
 
     let app = move || {
         App::new()
-            //.data(pool.clone())
-            //.service(create_user)
-            //.service(search_user)
-            //.service(schedule_content)
+            .service(
+                web::scope("/")
+                    .data(pool.clone())
+                    .service(create_user)
+                    .service(search_user)
+                    .service(schedule_content),
+            )
             .service(hello)
     };
 
