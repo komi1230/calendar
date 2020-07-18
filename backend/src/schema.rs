@@ -1,7 +1,7 @@
 table! {
     schedules (id) {
-        id -> Nullable<Text>,
-        username -> Text,
+        id -> Varchar,
+        username -> Varchar,
         fromtime -> Nullable<Timestamp>,
         totime -> Nullable<Timestamp>,
     }
@@ -9,7 +9,7 @@ table! {
 
 table! {
     users (username) {
-        username -> Text,
+        username -> Varchar,
         registerdate -> Nullable<Timestamp>,
     }
 }
