@@ -1,7 +1,7 @@
 table! {
     schedules (id) {
-        id -> Varchar,
-        username -> Varchar,
+        id -> Int4,
+        username -> Nullable<Varchar>,
         fromtime -> Nullable<Timestamp>,
         totime -> Nullable<Timestamp>,
     }
