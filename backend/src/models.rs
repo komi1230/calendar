@@ -2,7 +2,7 @@ use chrono::NaiveDateTime;
 use diesel::{self, prelude::*};
 use serde::{Deserialize, Serialize};
 
-use crate::schema::schedules::dsl::schedules as all_schedule;
+use crate::schema::schedules::dsl::schedules as all_schedules;
 
 use crate::schema::{schedules, users};
 
@@ -36,12 +36,14 @@ impl User {
 
 #[derive(Deserialize, Serialize, Queryable, Insertable)]
 pub struct Schedule {
-    id: Option<String>,
-    username: String,
+    id: i32,
+    username: Option<String>,
     fromtime: Option<NaiveDateTime>,
     totime: Option<NaiveDateTime>,
 }
 
+#[derive(Insertable, Queryable)]
+#[table_name = "schedules"]
 pub struct Content {
     username: String,
     fromtime: NaiveDateTime,
@@ -49,27 +51,22 @@ pub struct Content {
 }
 
 impl Schedule {
-    pub fn insert(content: Content, conn: &PgConnection) -> QueryResult<usize> {
-        let schedules_data = Schedule {
-            id: None,
-            username: content.username,
-            fromtime: Some(content.fromtime),
-            totime: Some(content.totime),
-        };
+    pub fn insert(content: Content, conn: &PgConnection) -> QueryResult<Schedule> {
         diesel::insert_into(schedules::table)
-            .values(schedules_data)
-            .execute(conn)
+            .values(content)
+            .get_result(conn)
     }
 
     pub fn get_schedule(username: String, conn: &PgConnection) -> QueryResult<Vec<Self>> {
-        all_schedule
+        schedules::table
+            .into_boxed()
             .filter(schedules::username.eq(username))
-            .load::<Schedule>(conn)
+            .load(conn)
     }
 
     pub fn delete(content: Content, conn: &PgConnection) -> QueryResult<usize> {
         diesel::delete(
-            all_schedule
+            all_schedules
                 .filter(schedules::username.eq(content.username))
                 .filter(schedules::fromtime.eq(content.fromtime))
                 .filter(schedules::totime.eq(content.totime)),
