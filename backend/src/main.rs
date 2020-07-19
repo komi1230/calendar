@@ -1,12 +1,9 @@
-use actix_web::{get, middleware, post, web, App, Error, HttpResponse, HttpServer, Responder};
-use diesel::prelude::*;
-use dotenv::dotenv;
-use std::env;
+use actix_web::{get, middleware, post, web, App, HttpResponse, HttpServer, Responder};
 
 use calendar::connection::make_pool;
 use calendar::views::{create_user, schedule_content, search_user};
 
-#[get("/")]
+#[get("/hello")]
 async fn hello() -> impl Responder {
     HttpResponse::Ok().body("Hey there!")
 }
