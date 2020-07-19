@@ -1,1 +1,2 @@
-DROP TABLE schedule;
+DROP TABLE users;
+DROP TABLE schedules;
