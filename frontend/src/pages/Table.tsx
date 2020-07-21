@@ -91,7 +91,7 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
 
   const handleClick = (year: number, month: number, date: number) => () => {
     setSelectedYear(year);
-    setSelectedMonth(month);
+    setSelectedMonth(month + 1);
     setSelectedDate(date);
   }
 
@@ -102,7 +102,7 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
           return (
             <Tile
               year={d.getFullYear()}
-              month={d.getMonth() + 1}
+              month={d.getMonth()}
               day={weekDays[d.getDay()]}
               date={d.getDate()}
               onClick={handleClick(d.getFullYear(), d.getMonth(), d.getDate())}
@@ -222,7 +222,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
 export const Table: React.FC = () => {
   const today = new Date();
   const year = today.getFullYear();
-  const month = today.getMonth();
+  const month = today.getMonth() + 1;
   return (
     <>
       <SearchAppBar />
