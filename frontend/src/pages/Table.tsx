@@ -197,7 +197,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
             alignItems="center"
           >
             <Grid item>
-              <IconButton onClick={handleDecrementClick}>
+              <IconButton onClick={handleDecrementClick} style={{color: "white"}}>
                 <ChevronLeftIcon />
               </IconButton>
             </Grid>
@@ -205,7 +205,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
               {year} / {month}
             </Grid>
             <Grid item>
-              <IconButton onClick={handleIncrementClick}>
+              <IconButton onClick={handleIncrementClick} style={{color: "white"}}>
                 <ChevronRightIcon />
               </IconButton>
             </Grid>
