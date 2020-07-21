@@ -146,7 +146,7 @@ const MonthTiles: React.FC<CalendarPageProps> = (props) => {
   return (
     <Grid container direction="column" alignItems="center" justify="center">
       {weeks.map((week: Date[], num: number) =>
-        <Grid item>
+        <Grid item key={num}>
           <WeekTiles dates={week} open={selectedWeek[num]} onClick={handleClick(num)} key={num}/>
         </Grid>
       )}
