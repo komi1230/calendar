@@ -128,13 +128,13 @@ const getLastSunday = (year: number, month: number): Date => {
 
 const afterDate = (date: Date, num: number): Date => new Date(date.getTime() + num * (24 * 60 * 60 * 1000));
 
-const MonthTiles: React.FC<CalendarPageProps> = (props) => {
-  const firstDate = getLastSunday(props.year, props.month)
-  const weeks = Array.from({ length: 6 }, (_, k) => k).map(week =>
-    Array.from({ length: 7 }, (_, kk) => kk).map(date =>
-      afterDate(firstDate, date + 7 * week)
-    )
-  );
+interface CalendarPageProps {
+  year: number,
+  month: number,
+};
+
+const CalendarPage: React.FC<CalendarPageProps> = (props) => {
+  const classes = useStyles();
 
   const [selectedWeek, setSelectedWeek] = useState([false, false, false, false, false]);
   const handleClick = (idx: number) => () => {
@@ -143,28 +143,11 @@ const MonthTiles: React.FC<CalendarPageProps> = (props) => {
     setSelectedWeek(lst)
   };
 
-  return (
-    <Grid container direction="column" alignItems="center" justify="center">
-      {weeks.map((week: Date[], num: number) =>
-        <Grid item key={num}>
-          <WeekTiles dates={week} open={selectedWeek[num]} onClick={handleClick(num)} key={num}/>
-        </Grid>
-      )}
-    </Grid>
-  )
-}
-
-interface CalendarPageProps {
-  year: number,
-  month: number,
-};
-
-const CalendarPage: React.FC<CalendarPageProps> = (props) => {
-  const classes = useStyles();
   const [year, setYear] = useState(props.year);
   const [month, setMonth] = useState(props.month);
-
   const handleIncrementClick = () => {
+    let lst = new Array(5).fill(false);
+    setSelectedWeek(lst)
     if (month === 12) {
       setYear(year + 1);
       setMonth(1);
@@ -173,6 +156,8 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
     }
   };
   const handleDecrementClick = () => {
+    let lst = new Array(5).fill(false);
+    setSelectedWeek(lst)
     if (month === 1) {
       setYear(year - 1);
       setMonth(12);
@@ -180,6 +165,13 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
       setMonth(month - 1);
     }
   }
+
+  const firstDate = getLastSunday(year, month)
+  const weeks = Array.from({ length: 6 }, (_, k) => k).map(week =>
+    Array.from({ length: 7 }, (_, kk) => kk).map(date =>
+      afterDate(firstDate, date + 7 * week)
+    )
+  );
 
   return (
     <Grid
@@ -213,7 +205,13 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
         </Box>
       </Grid>
       <Grid item>
-        <MonthTiles year={year} month={month} />
+        <Grid container direction="column" alignItems="center" justify="center">
+        {weeks.map((week: Date[], num: number) =>
+          <Grid item key={num}>
+            <WeekTiles dates={week} open={selectedWeek[num]} onClick={handleClick(num)} key={num}/>
+          </Grid>
+        )}
+    </Grid>
       </Grid>
     </Grid>
   )
