@@ -21,7 +21,7 @@ const useStyles = makeStyles((theme: Theme) =>
     tile: {
       minWidth: '40px',
       maxHeight: '50px',
-      borderRadius: '0',
+      borderRadius: 50,
       [theme.breakpoints.up('sm')]: {
         minWidth: '80px',
         minHeight: '80px'
