@@ -7,6 +7,7 @@ import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { SearchAppBar } from './Header';
 
 
@@ -19,6 +20,7 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
     },
     tile: {
+      paddingTop: "20px",
       minWidth: '40px',
       maxHeight: '50px',
       borderRadius: 50,
@@ -44,6 +46,7 @@ interface TileProps {
   day: string,
   date: number,
   onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
+  isScheduled: boolean,
 };
 
 const Tile: React.FC<TileProps> = (props) => {
@@ -51,7 +54,6 @@ const Tile: React.FC<TileProps> = (props) => {
   const classes = useStyles();
   return (
     <Button
-      //variant="outlined" 
       onClick={onClick}
       size="small"
       className={classes.tile}
@@ -71,6 +73,13 @@ const Tile: React.FC<TileProps> = (props) => {
           <div className={classes.tileDate}>
             {props.date}
           </div>
+          <ArrowDropDownIcon 
+            style={
+              props.isScheduled ? 
+              {} : 
+              {color: "white"}
+            }
+          />
         </Grid>
       </Grid>
     </Button>
@@ -81,6 +90,7 @@ interface WeekTilesProps {
   dates: Date[],
   open: boolean,
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
+  schedules: Date[],
 }
 
 const WeekTiles: React.FC<WeekTilesProps> = (props) => {
@@ -95,6 +105,18 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
     setSelectedDate(date);
   }
 
+  const checkIsScheduled = (d: Date, schedules: Date[]) => {
+    for (let i in schedules) {
+      let yearOK = d.getFullYear() === schedules[i].getFullYear();
+      let monthOK = d.getMonth() === schedules[i].getMonth();
+      let dateOK = d.getDate() === schedules[i].getDate();
+      if (yearOK && monthOK && dateOK) {
+        return true;
+      }
+    }
+    return false;
+  }
+
   return (
     <>
       <div onClick={props.onClick}>
@@ -106,6 +128,7 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
               day={weekDays[d.getDay()]}
               date={d.getDate()}
               onClick={handleClick(d.getFullYear(), d.getMonth(), d.getDate())}
+              isScheduled={checkIsScheduled(d, props.schedules)}
               key={idx}  // unique key
             />
           )
@@ -131,6 +154,7 @@ const afterDate = (date: Date, num: number): Date => new Date(date.getTime() + n
 interface CalendarPageProps {
   year: number,
   month: number,
+  schedules: Date[],
 };
 
 const CalendarPage: React.FC<CalendarPageProps> = (props) => {
@@ -208,7 +232,13 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
         <Grid container direction="column" alignItems="center" justify="center">
         {weeks.map((week: Date[], num: number) =>
           <Grid item key={num}>
-            <WeekTiles dates={week} open={selectedWeek[num]} onClick={handleClick(num)} key={num}/>
+            <WeekTiles 
+              dates={week} 
+              open={selectedWeek[num]} 
+              onClick={handleClick(num)} 
+              schedules={props.schedules}
+              key={num}
+            />
           </Grid>
         )}
     </Grid>
@@ -221,10 +251,11 @@ export const Table: React.FC = () => {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
+  const schedules = [new Date(2020, 6, 3), new Date(2020, 6, 13)]
   return (
     <>
       <SearchAppBar />
-      <CalendarPage year={year} month={month}/>
+      <CalendarPage year={year} month={month} schedules={schedules}/>
     </>
   )
 };
