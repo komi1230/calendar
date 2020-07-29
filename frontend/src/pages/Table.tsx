@@ -20,7 +20,6 @@ const useStyles = makeStyles((theme: Theme) =>
       textAlign: "center",
     },
     tile: {
-      paddingTop: "20px",
       minWidth: '40px',
       maxHeight: '50px',
       borderRadius: 50,
@@ -76,8 +75,8 @@ const Tile: React.FC<TileProps> = (props) => {
           <ArrowDropDownIcon 
             style={
               props.isScheduled ? 
-              {} : 
-              {color: "white"}
+              {position: "absolute", top: "85%", left: "50%", transform: "translate(-50%, -50%)"} : 
+              {position: "absolute", top: "85%", left: "50%", color: "transparent"}
             }
           />
         </Grid>
