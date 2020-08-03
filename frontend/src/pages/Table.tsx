@@ -89,7 +89,7 @@ interface WeekTilesProps {
   dates: Date[],
   open: boolean,
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
-  schedules: Date[],
+  schedules: Date[][],
 }
 
 const WeekTiles: React.FC<WeekTilesProps> = (props) => {
@@ -104,11 +104,11 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
     setSelectedDate(date);
   }
 
-  const checkIsScheduled = (d: Date, schedules: Date[]) => {
-    for (let i in schedules) {
-      let yearOK = d.getFullYear() === schedules[i].getFullYear();
-      let monthOK = d.getMonth() === schedules[i].getMonth();
-      let dateOK = d.getDate() === schedules[i].getDate();
+  const checkIsScheduled = (d: Date, schedules: Date[][]) => {
+    for (let s of schedules.map(sc => sc[0])) {
+      let yearOK = d.getFullYear() === s.getFullYear();
+      let monthOK = d.getMonth() === s.getMonth();
+      let dateOK = d.getDate() === s.getDate();
       if (yearOK && monthOK && dateOK) {
         return true;
       }
@@ -153,7 +153,7 @@ const afterDate = (date: Date, num: number): Date => new Date(date.getTime() + n
 interface CalendarPageProps {
   year: number,
   month: number,
-  schedules: Date[],
+  schedules: Date[][],
 };
 
 const CalendarPage: React.FC<CalendarPageProps> = (props) => {
@@ -250,7 +250,10 @@ export const Table: React.FC = () => {
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
-  const schedules = [new Date(2020, 6, 3), new Date(2020, 6, 13)]
+  const schedules = [
+    [new Date(2020, 7, 3, 10), new Date(2020, 7, 3, 13)],
+    [new Date(2020, 7, 13, 14), new Date(2020, 7, 3, 15)]
+  ]
   return (
     <>
       <SearchAppBar />
