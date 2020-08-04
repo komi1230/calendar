@@ -9,7 +9,11 @@ import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { SearchAppBar } from '../Header';
-
+import {
+  TileProps,
+  WeekTilesProps,
+  CalendarPageProps
+} from './CalendarType';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -38,15 +42,6 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
-
-interface TileProps {
-  year: number,
-  month: number,
-  day: string,
-  date: number,
-  onClick: (event: React.MouseEvent<HTMLButtonElement, MouseEvent>) => void,
-  isScheduled: boolean,
-};
 
 const Tile: React.FC<TileProps> = (props) => {
   const onClick = props.onClick;
@@ -84,13 +79,6 @@ const Tile: React.FC<TileProps> = (props) => {
     </Button>
   )
 };
-
-interface WeekTilesProps {
-  dates: Date[],
-  open: boolean,
-  onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
-  schedules: Date[][],
-}
 
 const WeekTiles: React.FC<WeekTilesProps> = (props) => {
   const weekDays: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
@@ -149,12 +137,6 @@ const getLastSunday = (year: number, month: number): Date => {
 }
 
 const afterDate = (date: Date, num: number): Date => new Date(date.getTime() + num * (24 * 60 * 60 * 1000));
-
-interface CalendarPageProps {
-  year: number,
-  month: number,
-  schedules: Date[][],
-};
 
 const CalendarPage: React.FC<CalendarPageProps> = (props) => {
   const classes = useStyles();
