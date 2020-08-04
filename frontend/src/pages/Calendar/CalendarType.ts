@@ -11,12 +11,16 @@ export interface WeekTilesProps {
     dates: Date[],
     open: boolean,
     onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void,
-    schedules: Date[][],
+    schedules: Schedule[],
 }
 
 export interface CalendarPageProps {
     year: number,
     month: number,
-    schedules: Date[][],
+    schedules: Schedule[],
 };
 
+export type Schedule = {
+    from: Date,
+    to: Date,
+}
