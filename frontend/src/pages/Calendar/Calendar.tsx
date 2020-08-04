@@ -12,7 +12,8 @@ import { SearchAppBar } from '../Header';
 import {
   TileProps,
   WeekTilesProps,
-  CalendarPageProps
+  CalendarPageProps,
+  Schedule
 } from './CalendarType';
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -92,8 +93,8 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
     setSelectedDate(date);
   }
 
-  const checkIsScheduled = (d: Date, schedules: Date[][]) => {
-    for (let s of schedules.map(sc => sc[0])) {
+  const checkIsScheduled = (d: Date, schedules: Schedule[]) => {
+    for (let s of schedules.map(sc => sc.from)) {
       let yearOK = d.getFullYear() === s.getFullYear();
       let monthOK = d.getMonth() === s.getMonth();
       let dateOK = d.getDate() === s.getDate();
@@ -230,8 +231,14 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
 
 export const Table: React.FC = () => {
   const [schedules, setSchedules] = useState([
-    [new Date(2020, 7, 3, 10), new Date(2020, 7, 3, 13)],
-    [new Date(2020, 7, 13, 14), new Date(2020, 7, 3, 15)]
+    {
+      from: new Date(2020, 7, 3, 10), 
+      to: new Date(2020, 7, 3, 13)
+    },
+    {
+      from: new Date(2020, 7, 13, 14),
+      to: new Date(2020, 7, 3, 15)
+    },
   ]);
 
   const today = new Date();
@@ -239,10 +246,10 @@ export const Table: React.FC = () => {
   const month = today.getMonth() + 1;
 
   const addSchedule = () => {
-    let tmp = [
-      new Date(2020, 7, 20, 14), 
-      new Date(2020, 7, 3, 10, 16)
-    ];
+    let tmp: Schedule = {
+      from: new Date(2020, 7, 20, 14), 
+      to: new Date(2020, 7, 3, 10, 16),
+    };
     schedules.push(tmp);
     setSchedules(schedules);
   }
