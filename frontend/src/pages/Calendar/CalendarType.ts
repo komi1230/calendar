@@ -21,6 +21,7 @@ export interface CalendarPageProps {
 };
 
 export type Schedule = {
+    id?: number,
     from: Date,
     to: Date,
 }
