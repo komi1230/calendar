@@ -8,7 +8,7 @@ import IconButton from '@material-ui/core/IconButton';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
-import { SearchAppBar } from './Header';
+import { SearchAppBar } from '../Header';
 
 
 const useStyles = makeStyles((theme: Theme) =>
@@ -247,17 +247,33 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
 };
 
 export const Table: React.FC = () => {
+  const [schedules, setSchedules] = useState([
+    [new Date(2020, 7, 3, 10), new Date(2020, 7, 3, 13)],
+    [new Date(2020, 7, 13, 14), new Date(2020, 7, 3, 15)]
+  ]);
+
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
-  const schedules = [
-    [new Date(2020, 7, 3, 10), new Date(2020, 7, 3, 13)],
-    [new Date(2020, 7, 13, 14), new Date(2020, 7, 3, 15)]
-  ]
+
+  const addSchedule = () => {
+    let tmp = [
+      new Date(2020, 7, 20, 14), 
+      new Date(2020, 7, 3, 10, 16)
+    ];
+    schedules.push(tmp);
+    setSchedules(schedules);
+  }
   return (
     <>
       <SearchAppBar />
       <CalendarPage year={year} month={month} schedules={schedules}/>
+      <Button 
+        onClick={addSchedule}
+        variant="outlined"
+      >
+        hoge
+      </Button>
     </>
   )
 };

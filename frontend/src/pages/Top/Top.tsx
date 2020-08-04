@@ -3,7 +3,7 @@ import { Grid, TextField } from '@material-ui/core';
 import Button from '@material-ui/core/Button';
 import Typography from '@material-ui/core/Typography';
 import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
-import { SearchAppBar } from './Header';
+import { SearchAppBar } from '../Header';
 
 
 const useStyles = makeStyles((theme: Theme) =>
