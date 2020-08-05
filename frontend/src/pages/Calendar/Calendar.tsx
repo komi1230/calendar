@@ -17,7 +17,7 @@ import {
   Schedule
 } from './CalendarType';
 import { RootState } from '../rootReducer';
-import { addSchedule } from './CalendarModule';
+import { selectDate, addSchedule, deleteSchedule } from './CalendarModule';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -48,11 +48,17 @@ const useStyles = makeStyles((theme: Theme) =>
 );
 
 const Tile: React.FC<TileProps> = (props) => {
-  const onClick = props.onClick;
+  const dispatch = useDispatch();
+
+  const thisDate = new Date(props.year, props.month, props.date).toString();
+  const setSelectedDate = () => {
+    dispatch(selectDate(thisDate))
+  }
+
   const classes = useStyles();
   return (
     <Button
-      onClick={onClick}
+      onClick={setSelectedDate}
       size="small"
       className={classes.tile}
     >
@@ -86,14 +92,21 @@ const Tile: React.FC<TileProps> = (props) => {
 
 const WeekTiles: React.FC<WeekTilesProps> = (props) => {
   const weekDays: string[] = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
-  const [selectedYear, setSelectedYear] = useState(new Date().getFullYear());
-  const [selectedMonth, setSelectedMonth] = useState(new Date().getMonth() + 1);
-  const [selectedDate, setSelectedDate] = useState(new Date().getDate());
 
-  const handleClick = (year: number, month: number, date: number) => () => {
-    setSelectedYear(year);
-    setSelectedMonth(month + 1);
-    setSelectedDate(date);
+  const { selectedDate } = useSelector((state: RootState) => state.calendar);
+
+  let isOpen: boolean;
+  if (selectedDate === undefined) {
+    isOpen = false
+  } else {
+    isOpen = props.dates.map(d => d.toString()).includes(selectedDate);
+  }
+
+  let printDate: string;
+  if (selectedDate === undefined) {
+    printDate = "NOT FOUND"
+  } else {
+    printDate = new Date(selectedDate).toDateString();
   }
 
   const checkIsScheduled = (d: Date, schedules: Schedule[]) => {
@@ -110,24 +123,21 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
 
   return (
     <>
-      <div onClick={props.onClick}>
-        {props.dates.map((d: Date, idx: number) => {
-          return (
-            <Tile
-              year={d.getFullYear()}
-              month={d.getMonth()}
-              day={weekDays[d.getDay()]}
-              date={d.getDate()}
-              onClick={handleClick(d.getFullYear(), d.getMonth(), d.getDate())}
-              isScheduled={checkIsScheduled(d, props.schedules)}
-              key={idx}  // unique key
-            />
-          )
-        })}
-      </div>
-      <Collapse in={props.open} timeout="auto" disableStrictModeCompat>
+      {props.dates.map((d: Date, idx: number) => {
+        return (
+          <Tile
+            year={d.getFullYear()}
+            month={d.getMonth()}
+            day={weekDays[d.getDay()]}
+            date={d.getDate()}
+            isScheduled={checkIsScheduled(d, props.schedules)}
+            key={idx}  // unique key
+          />
+        )
+      })}
+      <Collapse in={isOpen} timeout="auto" disableStrictModeCompat>
         <Box bgcolor="text.disabled" color="background.paper">
-          Clicked date: {selectedYear} / {selectedMonth} / {selectedDate}
+          Clicked date: {printDate}
         </Box>
       </Collapse>
     </>
@@ -219,8 +229,6 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
             <Grid item key={num}>
               <WeekTiles
                 dates={week}
-                open={selectedWeek[num]}
-                onClick={handleClick(num)}
                 schedules={props.schedules}
                 key={num}
               />
@@ -234,7 +242,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
 
 export const Calendar: React.FC = () => {
   const dispatch = useDispatch();
-  const { schedules } = useSelector((state: RootState) => state.schedules);
+  const { schedules, selectedDate } = useSelector((state: RootState) => state.calendar);
 
   const tmpSchedule: Schedule = {
     from: new Date(2020, 7, 15, 10).toString(),
