@@ -1,6 +1,6 @@
 import React from 'react';
 import { CreatePage } from './pages/Top/Top';
-import { Table } from './pages/Calendar/Calendar';
+import { Calendar } from './pages/Calendar/Calendar';
 import { Provider } from 'react-redux'
 import { store } from './pages/store'
 
@@ -8,7 +8,7 @@ const App: React.FC = () => {
   return (
     <Provider store={store}>
       {/* <CreatePage /> */}
-      <Table />
+      <Calendar />
     </Provider>
   )
 }
