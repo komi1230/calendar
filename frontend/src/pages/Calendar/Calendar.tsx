@@ -156,11 +156,6 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
   const classes = useStyles();
 
   const [selectedWeek, setSelectedWeek] = useState([false, false, false, false, false]);
-  const handleClick = (idx: number) => () => {
-    let lst = new Array(5).fill(false);
-    lst[idx] = true
-    setSelectedWeek(lst)
-  };
 
   const [year, setYear] = useState(props.year);
   const [month, setMonth] = useState(props.month);
@@ -242,7 +237,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
 
 export const Calendar: React.FC = () => {
   const dispatch = useDispatch();
-  const { schedules, selectedDate } = useSelector((state: RootState) => state.calendar);
+  const { schedules } = useSelector((state: RootState) => state.calendar);
 
   const tmpSchedule: Schedule = {
     from: new Date(2020, 7, 15, 10).toString(),
