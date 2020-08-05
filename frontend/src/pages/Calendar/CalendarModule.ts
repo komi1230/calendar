@@ -23,7 +23,7 @@ const initialState: State = {
       to: new Date(2020, 7, 13, 15).toString(),
     },
   ],
-  currentMonth: new Date().getMonth(),
+  currentMonth: new Date().getMonth() + 1,
   currentYear: new Date().getFullYear(),
 };
 
