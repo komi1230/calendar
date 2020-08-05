@@ -17,7 +17,7 @@ const initialState: State = {
     {
       id: 2,
       from: new Date(2020, 7, 13, 14),
-      to: new Date(2020, 7, 3, 15)
+      to: new Date(2020, 7, 13, 15)
     },
   ]
 };
@@ -26,7 +26,7 @@ export const CalendarModule = createSlice({
   name: "schedules",
   initialState,
   reducers: {
-    addSchedule(state: State, action: PayloadAction<Schedule>) {
+    addSchedule (state: State, action: PayloadAction<Schedule>) {
       state.count += 1;
       
       const newSchedule: Schedule = {
