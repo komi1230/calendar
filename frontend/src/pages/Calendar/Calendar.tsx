@@ -147,10 +147,7 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
 
   const checkIsScheduled = (d: Date, schedules: Schedule[]) => {
     for (let s of schedules.map(sc => sc.from)) {
-      let yearOK = d.getFullYear() === new Date(s).getFullYear();
-      let monthOK = d.getMonth() === new Date(s).getMonth();
-      let dateOK = d.getDate() === new Date(s).getDate();
-      if (yearOK && monthOK && dateOK) {
+      if (new Date(s).toDateString() === d.toDateString()) {
         return true;
       }
     }
