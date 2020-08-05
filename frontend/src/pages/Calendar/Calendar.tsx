@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import { useSelector, useDispatch } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -15,6 +16,8 @@ import {
   CalendarPageProps,
   Schedule
 } from './CalendarType';
+import { RootState } from '../rootReducer';
+import { addSchedule } from './CalendarModule';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -229,42 +232,31 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
   )
 };
 
-export const Table: React.FC = () => {
-  const [schedules, setSchedules] = useState<Schedule[]>([
-    {
-      id: 1,
-      from: new Date(2020, 7, 3, 10),
-      to: new Date(2020, 7, 3, 13)
-    },
-    {
-      id: 2,
-      from: new Date(2020, 7, 13, 14),
-      to: new Date(2020, 7, 3, 15)
-    },
-  ]);
+export const Calendar: React.FC = () => {
+  const dispatch = useDispatch();
+  const { schedules } = useSelector((state: RootState) => state.schedules);
+
+  const tmpSchedule: Schedule = {
+    from: new Date(2020, 7, 15, 10),
+    to: new Date(2020, 7, 15, 13),
+  };
+  const setNewSchedule = () => {
+    dispatch(addSchedule(tmpSchedule))
+  }
 
   const today = new Date();
   const year = today.getFullYear();
   const month = today.getMonth() + 1;
 
-  const addSchedule = () => {
-    let tmp: Schedule = {
-      id: 3,
-      from: new Date(2020, 7, 20, 14),
-      to: new Date(2020, 7, 3, 10, 16),
-    };
-    schedules.push(tmp);
-    setSchedules(schedules);
-  }
   return (
     <>
       <SearchAppBar />
       <CalendarPage year={year} month={month} schedules={schedules} />
       <Button
-        onClick={addSchedule}
+        onClick={setNewSchedule}
         variant="outlined"
       >
-        hoge
+        Add Schecule !
       </Button>
     </>
   )
