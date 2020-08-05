@@ -68,11 +68,11 @@ const Tile: React.FC<TileProps> = (props) => {
           <div className={classes.tileDate}>
             {props.date}
           </div>
-          <ArrowDropDownIcon 
+          <ArrowDropDownIcon
             style={
-              props.isScheduled ? 
-              {position: "absolute", top: "85%", left: "50%", transform: "translate(-50%, -50%)"} : 
-              {position: "absolute", top: "85%", left: "50%", color: "transparent"}
+              props.isScheduled ?
+                { position: "absolute", top: "85%", left: "50%", transform: "translate(-50%, -50%)" } :
+                { position: "absolute", top: "85%", left: "50%", color: "transparent" }
             }
           />
         </Grid>
@@ -195,7 +195,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
             alignItems="center"
           >
             <Grid item>
-              <IconButton onClick={handleDecrementClick} style={{color: "white"}}>
+              <IconButton onClick={handleDecrementClick} style={{ color: "white" }}>
                 <ChevronLeftIcon />
               </IconButton>
             </Grid>
@@ -203,7 +203,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
               {year} / {month}
             </Grid>
             <Grid item>
-              <IconButton onClick={handleIncrementClick} style={{color: "white"}}>
+              <IconButton onClick={handleIncrementClick} style={{ color: "white" }}>
                 <ChevronRightIcon />
               </IconButton>
             </Grid>
@@ -212,18 +212,18 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
       </Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center" justify="center">
-        {weeks.map((week: Date[], num: number) =>
-          <Grid item key={num}>
-            <WeekTiles 
-              dates={week} 
-              open={selectedWeek[num]} 
-              onClick={handleClick(num)} 
-              schedules={props.schedules}
-              key={num}
-            />
-          </Grid>
-        )}
-    </Grid>
+          {weeks.map((week: Date[], num: number) =>
+            <Grid item key={num}>
+              <WeekTiles
+                dates={week}
+                open={selectedWeek[num]}
+                onClick={handleClick(num)}
+                schedules={props.schedules}
+                key={num}
+              />
+            </Grid>
+          )}
+        </Grid>
       </Grid>
     </Grid>
   )
@@ -233,7 +233,7 @@ export const Table: React.FC = () => {
   const [schedules, setSchedules] = useState<Schedule[]>([
     {
       id: 1,
-      from: new Date(2020, 7, 3, 10), 
+      from: new Date(2020, 7, 3, 10),
       to: new Date(2020, 7, 3, 13)
     },
     {
@@ -250,7 +250,7 @@ export const Table: React.FC = () => {
   const addSchedule = () => {
     let tmp: Schedule = {
       id: 3,
-      from: new Date(2020, 7, 20, 14), 
+      from: new Date(2020, 7, 20, 14),
       to: new Date(2020, 7, 3, 10, 16),
     };
     schedules.push(tmp);
@@ -259,8 +259,8 @@ export const Table: React.FC = () => {
   return (
     <>
       <SearchAppBar />
-      <CalendarPage year={year} month={month} schedules={schedules}/>
-      <Button 
+      <CalendarPage year={year} month={month} schedules={schedules} />
+      <Button
         onClick={addSchedule}
         variant="outlined"
       >
