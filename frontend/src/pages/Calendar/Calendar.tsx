@@ -155,13 +155,9 @@ const afterDate = (date: Date, num: number): Date => new Date(date.getTime() + n
 const CalendarPage: React.FC<CalendarPageProps> = (props) => {
   const classes = useStyles();
 
-  const [selectedWeek, setSelectedWeek] = useState([false, false, false, false, false]);
-
   const [year, setYear] = useState(props.year);
   const [month, setMonth] = useState(props.month);
   const handleIncrementClick = () => {
-    let lst = new Array(5).fill(false);
-    setSelectedWeek(lst)
     if (month === 12) {
       setYear(year + 1);
       setMonth(1);
@@ -170,8 +166,6 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
     }
   };
   const handleDecrementClick = () => {
-    let lst = new Array(5).fill(false);
-    setSelectedWeek(lst)
     if (month === 1) {
       setYear(year - 1);
       setMonth(12);
@@ -181,7 +175,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
   }
 
   const firstDate = getLastSunday(year, month)
-  const weeks = Array.from({ length: 6 }, (_, k) => k).map(week =>
+  const weeks: Date[][] = Array.from({ length: 6 }, (_, k) => k).map(week =>
     Array.from({ length: 7 }, (_, kk) => kk).map(date =>
       afterDate(firstDate, date + 7 * week)
     )
