@@ -230,7 +230,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
 };
 
 export const Table: React.FC = () => {
-  const [schedules, setSchedules] = useState([
+  const [schedules, setSchedules] = useState<Schedule[]>([
     {
       id: 1,
       from: new Date(2020, 7, 3, 10), 
