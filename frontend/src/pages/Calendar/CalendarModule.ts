@@ -4,6 +4,7 @@ import { Schedule } from './CalendarType';
 type State = {
   count: number,
   schedules: Schedule[],
+  selectedDate?: string,
 };
 
 const initialState: State = {
@@ -19,13 +20,17 @@ const initialState: State = {
       from: new Date(2020, 7, 13, 14).toString(),
       to: new Date(2020, 7, 13, 15).toString(),
     },
-  ]
+  ],
 };
 
 export const CalendarModule = createSlice({
-  name: "schedules",
+  name: "calendar",
   initialState,
   reducers: {
+    selectDate (state: State, action: PayloadAction<string>) {
+      state.selectedDate = action.payload;
+    },
+
     addSchedule (state: State, action: PayloadAction<Schedule>) {
       state.count += 1;
       
@@ -44,4 +49,4 @@ export const CalendarModule = createSlice({
   }
 });
 
-export const { addSchedule, deleteSchedule } = CalendarModule.actions;
+export const { selectDate, addSchedule, deleteSchedule } = CalendarModule.actions;
