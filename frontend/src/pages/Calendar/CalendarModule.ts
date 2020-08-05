@@ -5,6 +5,8 @@ type State = {
   count: number,
   schedules: Schedule[],
   selectedDate?: string,
+  currentMonth: number,
+  currentYear: number,
 };
 
 const initialState: State = {
@@ -21,6 +23,8 @@ const initialState: State = {
       to: new Date(2020, 7, 13, 15).toString(),
     },
   ],
+  currentMonth: new Date().getMonth(),
+  currentYear: new Date().getFullYear(),
 };
 
 export const CalendarModule = createSlice({
@@ -29,6 +33,27 @@ export const CalendarModule = createSlice({
   reducers: {
     selectDate (state: State, action: PayloadAction<string>) {
       state.selectedDate = action.payload;
+    },
+
+    changeMonth (state: State, action: PayloadAction<string>) {
+      switch (action.payload) {
+        case 'INCREMENT':
+          if (state.currentMonth === 11) {
+            state.currentMonth = 0;
+            state.currentYear += 1;
+          } else {
+            state.currentMonth += 1;
+          }
+          break;
+        case 'DECREMENT':
+          if (state.currentMonth === 0) {
+            state.currentMonth = 12;
+            state.currentYear -= 1;
+          } else {
+            state.currentMonth -= 1;
+          }
+          break;
+      }
     },
 
     addSchedule (state: State, action: PayloadAction<Schedule>) {
@@ -49,4 +74,4 @@ export const CalendarModule = createSlice({
   }
 });
 
-export const { selectDate, addSchedule, deleteSchedule } = CalendarModule.actions;
+export const { selectDate, addSchedule, deleteSchedule, changeMonth } = CalendarModule.actions;

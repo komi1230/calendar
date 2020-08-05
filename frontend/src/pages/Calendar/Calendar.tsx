@@ -17,7 +17,7 @@ import {
   Schedule
 } from './CalendarType';
 import { RootState } from '../rootReducer';
-import { selectDate, addSchedule, deleteSchedule } from './CalendarModule';
+import { selectDate, addSchedule, deleteSchedule, changeMonth } from './CalendarModule';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -46,6 +46,42 @@ const useStyles = makeStyles((theme: Theme) =>
     }
   })
 );
+
+const SelectMonth: React.FC<CalendarPageProps> = (props) => {
+  const classes = useStyles();
+
+  const dispatch = useDispatch();
+
+  const { currentMonth, currentYear } = useSelector((state: RootState) => state.calendar);
+  const handleClick = (method: string) => () => {
+    dispatch(changeMonth(method))
+  }
+
+  return (
+    <Box bgcolor="text.secondary" color="background.paper" p={2} className={classes.month}>
+      <Grid
+        container
+        direction="row"
+        justify="center"
+        alignItems="center"
+      >
+        <Grid item>
+          <IconButton onClick={handleClick('DECREMENT')} style={{ color: "white" }}>
+            <ChevronLeftIcon />
+          </IconButton>
+        </Grid>
+        <Grid item xs={6} sm={2}>
+          {currentYear} / {currentMonth}
+        </Grid>
+        <Grid item>
+          <IconButton onClick={handleClick('INCREMENT')} style={{ color: "white" }}>
+            <ChevronRightIcon />
+          </IconButton>
+        </Grid>
+      </Grid>
+    </Box>
+  )
+}
 
 const Tile: React.FC<TileProps> = (props) => {
   const dispatch = useDispatch();
@@ -153,28 +189,8 @@ const getLastSunday = (year: number, month: number): Date => {
 const afterDate = (date: Date, num: number): Date => new Date(date.getTime() + num * (24 * 60 * 60 * 1000));
 
 const CalendarPage: React.FC<CalendarPageProps> = (props) => {
-  const classes = useStyles();
-
-  const [year, setYear] = useState(props.year);
-  const [month, setMonth] = useState(props.month);
-  const handleIncrementClick = () => {
-    if (month === 12) {
-      setYear(year + 1);
-      setMonth(1);
-    } else {
-      setMonth(month + 1);
-    }
-  };
-  const handleDecrementClick = () => {
-    if (month === 1) {
-      setYear(year - 1);
-      setMonth(12);
-    } else {
-      setMonth(month - 1);
-    }
-  }
-
-  const firstDate = getLastSunday(year, month)
+  const { currentYear, currentMonth } = useSelector((state: RootState) => state.calendar);
+  const firstDate = getLastSunday(currentYear, currentMonth);
   const weeks: Date[][] = Array.from({ length: 6 }, (_, k) => k).map(week =>
     Array.from({ length: 7 }, (_, kk) => kk).map(date =>
       afterDate(firstDate, date + 7 * week)
@@ -189,28 +205,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
       alignItems="stretch"
     >
       <Grid item>
-        <Box bgcolor="text.secondary" color="background.paper" p={2} className={classes.month}>
-          <Grid
-            container
-            direction="row"
-            justify="center"
-            alignItems="center"
-          >
-            <Grid item>
-              <IconButton onClick={handleDecrementClick} style={{ color: "white" }}>
-                <ChevronLeftIcon />
-              </IconButton>
-            </Grid>
-            <Grid item xs={6} sm={2}>
-              {year} / {month}
-            </Grid>
-            <Grid item>
-              <IconButton onClick={handleIncrementClick} style={{ color: "white" }}>
-                <ChevronRightIcon />
-              </IconButton>
-            </Grid>
-          </Grid>
-        </Box>
+        <SelectMonth year={props.year} month={props.month} schedules={props.schedules}/>
       </Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center" justify="center">
@@ -231,7 +226,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
 
 export const Calendar: React.FC = () => {
   const dispatch = useDispatch();
-  const { schedules } = useSelector((state: RootState) => state.calendar);
+  const { schedules, currentYear, currentMonth } = useSelector((state: RootState) => state.calendar);
 
   const tmpSchedule: Schedule = {
     from: new Date(2020, 7, 15, 10).toString(),
@@ -248,7 +243,7 @@ export const Calendar: React.FC = () => {
   return (
     <>
       <SearchAppBar />
-      <CalendarPage year={year} month={month} schedules={schedules} />
+      <CalendarPage year={currentYear} month={currentMonth} schedules={schedules} />
       <Button
         onClick={setNewSchedule}
         variant="outlined"
