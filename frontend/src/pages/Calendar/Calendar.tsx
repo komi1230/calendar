@@ -98,9 +98,9 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
 
   const checkIsScheduled = (d: Date, schedules: Schedule[]) => {
     for (let s of schedules.map(sc => sc.from)) {
-      let yearOK = d.getFullYear() === s.getFullYear();
-      let monthOK = d.getMonth() === s.getMonth();
-      let dateOK = d.getDate() === s.getDate();
+      let yearOK = d.getFullYear() === new Date(s).getFullYear();
+      let monthOK = d.getMonth() === new Date(s).getMonth();
+      let dateOK = d.getDate() === new Date(s).getDate();
       if (yearOK && monthOK && dateOK) {
         return true;
       }
@@ -237,8 +237,8 @@ export const Calendar: React.FC = () => {
   const { schedules } = useSelector((state: RootState) => state.schedules);
 
   const tmpSchedule: Schedule = {
-    from: new Date(2020, 7, 15, 10),
-    to: new Date(2020, 7, 15, 13),
+    from: new Date(2020, 7, 15, 10).toString(),
+    to: new Date(2020, 7, 15, 13).toString(),
   };
   const setNewSchedule = () => {
     dispatch(addSchedule(tmpSchedule))

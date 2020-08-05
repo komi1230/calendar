@@ -11,13 +11,13 @@ const initialState: State = {
   schedules: [
     {
       id: 1,
-      from: new Date(2020, 7, 3, 10),
-      to: new Date(2020, 7, 3, 13)
+      from: new Date(2020, 7, 3, 10).toString(),
+      to: new Date(2020, 7, 3, 13).toString(),
     },
     {
       id: 2,
-      from: new Date(2020, 7, 13, 14),
-      to: new Date(2020, 7, 13, 15)
+      from: new Date(2020, 7, 13, 14).toString(),
+      to: new Date(2020, 7, 13, 15).toString(),
     },
   ]
 };
