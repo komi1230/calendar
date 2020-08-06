@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
@@ -232,10 +232,6 @@ export const Calendar: React.FC = () => {
   const setNewSchedule = () => {
     dispatch(addSchedule(tmpSchedule))
   }
-
-  const today = new Date();
-  const year = today.getFullYear();
-  const month = today.getMonth() + 1;
 
   return (
     <>
