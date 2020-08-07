@@ -237,12 +237,12 @@ export const Calendar: React.FC = () => {
     <>
       <SearchAppBar />
       <CalendarPage year={currentYear} month={currentMonth} schedules={schedules} />
-      <Button
+      {/* <Button
         onClick={setNewSchedule}
         variant="outlined"
       >
         Add Schecule !
-      </Button>
+      </Button> */}
     </>
   )
 };
