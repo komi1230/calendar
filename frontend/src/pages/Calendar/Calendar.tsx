@@ -84,6 +84,18 @@ const SelectMonth: React.FC<CalendarPageProps> = (props) => {
 }
 
 const Tile: React.FC<TileProps> = (props) => {
+  let color;
+  switch (props.day) {
+    case "Sun":
+      color = {color: "red"};
+      break;
+    case "Sat":
+      color = {color: "blue"};
+      break;
+    default:
+      color = {color: "black"};
+      break;
+  }
   const dispatch = useDispatch();
 
   const thisDate = new Date(props.year, props.month, props.date).toString();
@@ -97,6 +109,7 @@ const Tile: React.FC<TileProps> = (props) => {
       onClick={setSelectedDate}
       size="small"
       className={classes.tile}
+      style={color}
     >
       <Grid
         container
@@ -237,12 +250,12 @@ export const Calendar: React.FC = () => {
     <>
       <SearchAppBar />
       <CalendarPage year={currentYear} month={currentMonth} schedules={schedules} />
-      {/* <Button
+      <Button
         onClick={setNewSchedule}
         variant="outlined"
       >
         Add Schecule !
-      </Button> */}
+      </Button>
     </>
   )
 };
