@@ -1,4 +1,4 @@
-use actix_web::{get, middleware, post, web, App, HttpResponse, HttpServer, Responder};
+use actix_web::{get, web, App, HttpResponse, HttpServer, Responder};
 
 use calendar::connection::make_pool;
 use calendar::views::{create_user, schedule_content, search_user};
