@@ -14,10 +14,12 @@ import {
   TileProps,
   WeekTilesProps,
   CalendarPageProps,
-  Schedule
+  Schedule,
+  ScheduleContentProps,
 } from './CalendarType';
 import { RootState } from '../rootReducer';
 import { selectDate, addSchedule, deleteSchedule, changeMonth } from './CalendarModule';
+import { StringDecoder } from 'string_decoder';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -183,9 +185,40 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
       })}
       <Collapse in={isOpen} timeout="auto" disableStrictModeCompat>
         <Box bgcolor="text.disabled" color="background.paper">
-          Clicked date: {printDate}
+          <ScheduleContent schedules={props.schedules}/>
         </Box>
       </Collapse>
+    </>
+  )
+}
+
+const ScheduleContent: React.FC<ScheduleContentProps> = (props) => {
+  const { selectedDate } = useSelector((state: RootState) => state.calendar);
+  const schedules = (d: string | undefined, schedules: Schedule[]) => {
+    let lst: string[][] = [];
+    if (d === undefined) {
+      return lst;
+    }
+    for (let s of schedules) {
+      if (new Date(s.from).toDateString() === new Date(d).toDateString()) {
+        lst.push([
+          new Date(s.from).toDateString(),
+          new Date(s.to).toDateString()
+        ]);
+      }
+    }
+    return lst;
+  }
+  return (
+    <>
+      Schedule: {schedules(selectedDate, props.schedules).map(pair => 
+        <>
+          <br/>
+          from: {pair[0]}
+          <br/>
+          to: {pair[1]}
+        </>
+      )}
     </>
   )
 }
