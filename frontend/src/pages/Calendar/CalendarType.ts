@@ -18,7 +18,7 @@ export interface CalendarPageProps {
 };
 
 export interface ScheduleContentProps {
-    contents: Schedule[],
+    schedules: Schedule[],
 }
 
 export type Schedule = {
