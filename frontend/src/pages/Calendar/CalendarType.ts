@@ -17,6 +17,10 @@ export interface CalendarPageProps {
     schedules: Schedule[],
 };
 
+export interface ScheduleContentProps {
+    contents: Schedule[],
+}
+
 export type Schedule = {
     id?: number,
     from: string,
