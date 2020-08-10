@@ -19,7 +19,6 @@ import {
 } from './CalendarType';
 import { RootState } from '../rootReducer';
 import { selectDate, addSchedule, deleteSchedule, changeMonth } from './CalendarModule';
-import { StringDecoder } from 'string_decoder';
 
 const useStyles = makeStyles((theme: Theme) =>
   createStyles({
@@ -151,13 +150,6 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
     isOpen = false
   } else {
     isOpen = props.dates.map(d => d.toString()).includes(selectedDate);
-  }
-
-  let printDate: string;
-  if (selectedDate === undefined) {
-    printDate = "NOT FOUND"
-  } else {
-    printDate = new Date(selectedDate).toDateString();
   }
 
   const checkIsScheduled = (d: Date, schedules: Schedule[]) => {
