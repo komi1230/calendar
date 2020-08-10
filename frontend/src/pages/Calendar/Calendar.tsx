@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useState } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
+import TextField from '@material-ui/core/TextField';
 import { Grid } from '@material-ui/core';
 import Box from '@material-ui/core/Box';
 import Button from '@material-ui/core/Button';
@@ -8,6 +9,8 @@ import { createStyles, Theme, makeStyles } from '@material-ui/core/styles';
 import IconButton from '@material-ui/core/IconButton';
 import ChevronRightIcon from '@material-ui/icons/ChevronRight';
 import ChevronLeftIcon from '@material-ui/icons/ChevronLeft';
+import ExpandLess from '@material-ui/icons/ExpandLess';
+import ExpandMore from '@material-ui/icons/ExpandMore';
 import ArrowDropDownIcon from '@material-ui/icons/ArrowDropDown';
 import { SearchAppBar } from '../Header';
 import {
@@ -88,13 +91,13 @@ const Tile: React.FC<TileProps> = (props) => {
   let color;
   switch (props.day) {
     case "Sun":
-      color = {color: "red"};
+      color = { color: "red" };
       break;
     case "Sat":
-      color = {color: "blue"};
+      color = { color: "blue" };
       break;
     default:
-      color = {color: "black"};
+      color = { color: "black" };
       break;
   }
   const dispatch = useDispatch();
@@ -187,15 +190,15 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
 const ScheduleContent: React.FC<ScheduleContentProps> = (props) => {
   const { selectedDate } = useSelector((state: RootState) => state.calendar);
   const schedules = (d: string | undefined, schedules: Schedule[]) => {
-    let lst: string[][] = [];
+    let lst: Date[][] = [];
     if (d === undefined) {
       return lst;
     }
     for (let s of schedules) {
       if (new Date(s.from).toDateString() === new Date(d).toDateString()) {
         lst.push([
-          new Date(s.from).toDateString(),
-          new Date(s.to).toDateString()
+          new Date(s.from),
+          new Date(s.to)
         ]);
       }
     }
@@ -203,14 +206,102 @@ const ScheduleContent: React.FC<ScheduleContentProps> = (props) => {
   }
   return (
     <>
-      Schedule: {schedules(selectedDate, props.schedules).map(pair => 
-        <>
-          <br/>
-          from: {pair[0]}
-          <br/>
-          to: {pair[1]}
-        </>
-      )}
+      <AddButton/>
+      Schedule: {schedules(selectedDate, props.schedules).map(pair =>
+      <>
+        <br />
+        {pair[0].getHours()}:{pair[0].getMinutes()} - {pair[1].getHours()}:{pair[1].getMinutes()}
+      </>
+    )}
+    </>
+  )
+}
+
+const AddButton: React.FC = () => {
+  const { selectedDate } = useSelector((state: RootState) => state.calendar);
+
+  const [open, setOpen] = useState(false);
+  const [fromTime, setFromTime] = useState("10:00");
+  const [toTime, setToTime] = useState("11:00");
+
+  const dispatch = useDispatch();
+  const handleNewSchedule = () => {
+    let thisDate: Date;
+    if (selectedDate === undefined) {
+      return
+    } else {
+      thisDate = new Date(selectedDate);
+    }
+    const year = thisDate.getFullYear();
+    const month = thisDate.getMonth();
+    const date = thisDate.getDate()
+    const fromTimePair = fromTime.split(":").map(Number);;
+    const toTimePair = toTime.split(":").map(Number);;
+    const s: Schedule = {
+      from: new Date(year, month, date, fromTimePair[0], fromTimePair[1]).toString(),
+      to: new Date(year, month, date, toTimePair[0], toTimePair[1]).toString(),
+    }
+    console.log("schedule:   ", s)
+    dispatch(addSchedule(s))
+  };
+
+  return (
+    <>
+      <Button
+        onClick={() => setOpen(!open)}
+        style={{color: "white"}}
+      >
+        Add schedule !
+        {open ? <ExpandLess /> : <ExpandMore />}
+    </Button>
+      <Collapse in={open} timeout="auto" disableStrictModeCompat>
+        <form>
+          <TextField
+            type="time"
+            label="from"
+            value={fromTime}
+            onChange={e => setFromTime(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+              style: {color: "white"}
+            }}
+            inputProps={{
+              step: 300, // 5 min
+              style: {color: "white"}
+            }}
+            InputProps={{
+              style: {color: "white"}
+            }}
+          />
+          <TextField
+            type="time"
+            label="to"
+            value={toTime}
+            onChange={e => setToTime(e.target.value)}
+            InputLabelProps={{
+              shrink: true,
+              style: {color: "white"}
+            }}
+            inputProps={{
+              step: 300, // 5 min
+              style: {color: "white"}
+            }}
+            InputProps={{
+              style: {color: "white"}
+            }}
+          />
+          <Button
+            variant="outlined"
+            onClick={handleNewSchedule}
+            style={{
+              color: "white",
+              backgroundColor: "#696969",
+            }}
+          >
+            add
+          </Button>
+        </form>
+      </Collapse>
     </>
   )
 }
@@ -240,7 +331,7 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
       alignItems="stretch"
     >
       <Grid item>
-        <SelectMonth year={props.year} month={props.month} schedules={props.schedules}/>
+        <SelectMonth year={props.year} month={props.month} schedules={props.schedules} />
       </Grid>
       <Grid item>
         <Grid container direction="column" alignItems="center" justify="center">
