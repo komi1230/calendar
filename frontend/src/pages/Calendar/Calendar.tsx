@@ -206,13 +206,14 @@ const ScheduleContent: React.FC<ScheduleContentProps> = (props) => {
   }
   return (
     <>
-      <AddButton />
       Schedule: {schedules(selectedDate, props.schedules).map(pair =>
         <>
           <br />
           {pair[0].getHours()}:{pair[0].getMinutes()} - {pair[1].getHours()}:{pair[1].getMinutes()}
         </>
       )}
+      <br/>
+      <AddButton />
     </>
   )
 }
@@ -255,7 +256,14 @@ const AddButton: React.FC = () => {
         {open ? <ExpandLess /> : <ExpandMore />}
       </Button>
       <Collapse in={open} timeout="auto" disableStrictModeCompat>
-        <form>
+        <Grid
+          container
+          direction="row"
+          justify="center"
+          alignItems="center"
+          spacing={4}
+        >
+          <Grid item>
           <TextField
             type="time"
             label="from"
@@ -273,6 +281,8 @@ const AddButton: React.FC = () => {
               style: { color: "white" }
             }}
           />
+          </Grid>
+          <Grid item>
           <TextField
             type="time"
             label="to"
@@ -290,6 +300,8 @@ const AddButton: React.FC = () => {
               style: { color: "white" }
             }}
           />
+          </Grid>
+          <Grid item>
           <Button
             variant="outlined"
             onClick={handleNewSchedule}
@@ -300,7 +312,8 @@ const AddButton: React.FC = () => {
           >
             add
           </Button>
-        </form>
+          </Grid>
+        </Grid>
       </Collapse>
     </>
   )
@@ -351,27 +364,12 @@ const CalendarPage: React.FC<CalendarPageProps> = (props) => {
 };
 
 export const Calendar: React.FC = () => {
-  const dispatch = useDispatch();
   const { schedules, currentYear, currentMonth } = useSelector((state: RootState) => state.calendar);
-
-  const tmpSchedule: Schedule = {
-    from: new Date(2020, 7, 15, 10).toString(),
-    to: new Date(2020, 7, 15, 13).toString(),
-  };
-  const setNewSchedule = () => {
-    dispatch(addSchedule(tmpSchedule))
-  }
 
   return (
     <>
       <SearchAppBar />
       <CalendarPage year={currentYear} month={currentMonth} schedules={schedules} />
-      <Button
-        onClick={setNewSchedule}
-        variant="outlined"
-      >
-        Add Schecule !
-      </Button>
     </>
   )
 };
