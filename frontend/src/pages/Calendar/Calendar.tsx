@@ -180,7 +180,7 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
       })}
       <Collapse in={isOpen} timeout="auto" disableStrictModeCompat>
         <Box bgcolor="text.disabled" color="background.paper">
-          <ScheduleContent schedules={props.schedules}/>
+          <ScheduleContent schedules={props.schedules} />
         </Box>
       </Collapse>
     </>
@@ -206,13 +206,13 @@ const ScheduleContent: React.FC<ScheduleContentProps> = (props) => {
   }
   return (
     <>
-      <AddButton/>
+      <AddButton />
       Schedule: {schedules(selectedDate, props.schedules).map(pair =>
-      <>
-        <br />
-        {pair[0].getHours()}:{pair[0].getMinutes()} - {pair[1].getHours()}:{pair[1].getMinutes()}
-      </>
-    )}
+        <>
+          <br />
+          {pair[0].getHours()}:{pair[0].getMinutes()} - {pair[1].getHours()}:{pair[1].getMinutes()}
+        </>
+      )}
     </>
   )
 }
@@ -249,11 +249,11 @@ const AddButton: React.FC = () => {
     <>
       <Button
         onClick={() => setOpen(!open)}
-        style={{color: "white"}}
+        style={{ color: "white" }}
       >
         Add schedule !
         {open ? <ExpandLess /> : <ExpandMore />}
-    </Button>
+      </Button>
       <Collapse in={open} timeout="auto" disableStrictModeCompat>
         <form>
           <TextField
@@ -263,14 +263,14 @@ const AddButton: React.FC = () => {
             onChange={e => setFromTime(e.target.value)}
             InputLabelProps={{
               shrink: true,
-              style: {color: "white"}
+              style: { color: "white" }
             }}
             inputProps={{
               step: 300, // 5 min
-              style: {color: "white"}
+              style: { color: "white" }
             }}
             InputProps={{
-              style: {color: "white"}
+              style: { color: "white" }
             }}
           />
           <TextField
@@ -280,14 +280,14 @@ const AddButton: React.FC = () => {
             onChange={e => setToTime(e.target.value)}
             InputLabelProps={{
               shrink: true,
-              style: {color: "white"}
+              style: { color: "white" }
             }}
             inputProps={{
               step: 300, // 5 min
-              style: {color: "white"}
+              style: { color: "white" }
             }}
             InputProps={{
-              style: {color: "white"}
+              style: { color: "white" }
             }}
           />
           <Button
