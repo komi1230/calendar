@@ -207,12 +207,12 @@ const ScheduleContent: React.FC<ScheduleContentProps> = (props) => {
   return (
     <>
       Schedule: {schedules(selectedDate, props.schedules).map(pair =>
-        <>
-          <br />
-          {pair[0].getHours()}:{pair[0].getMinutes()} - {pair[1].getHours()}:{pair[1].getMinutes()}
-        </>
-      )}
-      <br/>
+      <>
+        <br />
+        {pair[0].getHours()}:{pair[0].getMinutes()} - {pair[1].getHours()}:{pair[1].getMinutes()}
+      </>
+    )}
+      <br />
       <AddButton />
     </>
   )
@@ -250,7 +250,8 @@ const AddButton: React.FC = () => {
     <>
       <Button
         onClick={() => setOpen(!open)}
-        style={{ color: "white" }}
+        style={{ color: "white", backgroundColor: "#708090" }}
+        color="primary"
       >
         Add schedule !
         {open ? <ExpandLess /> : <ExpandMore />}
@@ -264,53 +265,53 @@ const AddButton: React.FC = () => {
           spacing={4}
         >
           <Grid item>
-          <TextField
-            type="time"
-            label="from"
-            value={fromTime}
-            onChange={e => setFromTime(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-              style: { color: "white" }
-            }}
-            inputProps={{
-              step: 300, // 5 min
-              style: { color: "white" }
-            }}
-            InputProps={{
-              style: { color: "white" }
-            }}
-          />
+            <TextField
+              type="time"
+              label="from"
+              value={fromTime}
+              onChange={e => setFromTime(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+                style: { color: "white" }
+              }}
+              inputProps={{
+                step: 300, // 5 min
+                style: { color: "white" }
+              }}
+              InputProps={{
+                style: { color: "white" }
+              }}
+            />
           </Grid>
           <Grid item>
-          <TextField
-            type="time"
-            label="to"
-            value={toTime}
-            onChange={e => setToTime(e.target.value)}
-            InputLabelProps={{
-              shrink: true,
-              style: { color: "white" }
-            }}
-            inputProps={{
-              step: 300, // 5 min
-              style: { color: "white" }
-            }}
-            InputProps={{
-              style: { color: "white" }
-            }}
-          />
+            <TextField
+              type="time"
+              label="to"
+              value={toTime}
+              onChange={e => setToTime(e.target.value)}
+              InputLabelProps={{
+                shrink: true,
+                style: { color: "white" }
+              }}
+              inputProps={{
+                step: 300, // 5 min
+                style: { color: "white" }
+              }}
+              InputProps={{
+                style: { color: "white" }
+              }}
+            />
           </Grid>
           <Grid item>
-          <Button
-            variant="outlined"
-            onClick={handleNewSchedule}
-            style={{
-              color: "white",
-              backgroundColor: "#696969",
-            }}
-          >
-            add
+            <Button
+              variant="outlined"
+              onClick={handleNewSchedule}
+              style={{
+                color: "white",
+                backgroundColor: "#696969",
+              }}
+            >
+              add
           </Button>
           </Grid>
         </Grid>
