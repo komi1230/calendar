@@ -251,7 +251,7 @@ const AddButton: React.FC = () => {
       <Button
         onClick={() => setOpen(!open)}
         style={{ color: "white", backgroundColor: "#708090" }}
-        color="primary"
+        size="small"
       >
         Add schedule !
         {open ? <ExpandLess /> : <ExpandMore />}
@@ -262,7 +262,8 @@ const AddButton: React.FC = () => {
           direction="row"
           justify="center"
           alignItems="center"
-          spacing={4}
+          spacing={3}
+          style={{paddingTop: "3px"}}
         >
           <Grid item>
             <TextField
