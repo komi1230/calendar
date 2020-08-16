@@ -189,11 +189,20 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
 
 const ScheduleContent: React.FC<ScheduleContentProps> = (props) => {
   return (
-    <>
-      <ScheduleList schedules={props.schedules}/>
-      <br />
-      <AddButton />
-    </>
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+      spacing={2}
+    >
+      <Grid item>
+        <ScheduleList schedules={props.schedules} />
+      </Grid>
+      <Grid item>
+        <AddButton />
+      </Grid>
+    </Grid>
   )
 }
 
@@ -229,7 +238,7 @@ const ScheduleList: React.FC<ScheduleContentProps> = (props) => {
   const handleDeleteSchedule = (s: Schedule) => () => {
     dispatch(deleteSchedule(s))
   }
-  
+
   if (contents.length === 0) {
     return <>Schedule Not Found</>
   } else {
@@ -239,20 +248,33 @@ const ScheduleList: React.FC<ScheduleContentProps> = (props) => {
         direction="column"
         justify="center"
         alignItems="center"
+        spacing={2}
       >
-        {contents.map(content => 
+        {contents.map(content =>
           <Grid item>
-            {formatDate(content.from)} - {formatDate(content.to)}
-            <Button
-              variant="outlined"
-              onClick={handleDeleteSchedule(content)}
-              style={{
-                color: "white",
-                backgroundColor: "#696969",
-              }}
+            <Grid 
+              container
+              direction="row"
+              justify="center"
+              alignItems="center"
+              spacing={2}
             >
-              delete
-            </Button>
+              <Grid item>
+                {formatDate(content.from)} - {formatDate(content.to)}
+              </Grid>
+              <Grid item>
+                <Button
+                  variant="outlined"
+                  onClick={handleDeleteSchedule(content)}
+                  style={{
+                    color: "white",
+                    backgroundColor: "#696969",
+                  }}
+                >
+                  delete
+                </Button>
+              </Grid>
+            </Grid>
           </Grid>
         )}
       </Grid>
@@ -305,7 +327,7 @@ const AddButton: React.FC = () => {
           justify="center"
           alignItems="center"
           spacing={3}
-          style={{paddingTop: "3px"}}
+          style={{ paddingTop: "3px" }}
         >
           <Grid item>
             <TextField
