@@ -188,34 +188,76 @@ const WeekTiles: React.FC<WeekTilesProps> = (props) => {
 }
 
 const ScheduleContent: React.FC<ScheduleContentProps> = (props) => {
-  const { selectedDate } = useSelector((state: RootState) => state.calendar);
-  const schedules = (d: string | undefined, schedules: Schedule[]) => {
-    let lst: Date[][] = [];
-    if (d === undefined) {
-      return lst;
-    }
-    for (let s of schedules) {
-      if (new Date(s.from).toDateString() === new Date(d).toDateString()) {
-        lst.push([
-          new Date(s.from),
-          new Date(s.to)
-        ]);
-      }
-    }
-    return lst;
-  }
   return (
     <>
-      Schedule: {schedules(selectedDate, props.schedules).map(pair =>
-      <>
-        <br />
-        {pair[0].getHours()}:{pair[0].getMinutes()} - {pair[1].getHours()}:{pair[1].getMinutes()}
-      </>
-    )}
+      <ScheduleList schedules={props.schedules}/>
       <br />
       <AddButton />
     </>
   )
+}
+
+const ScheduleList: React.FC<ScheduleContentProps> = (props) => {
+  const dispatch = useDispatch();
+  const { selectedDate } = useSelector((state: RootState) => state.calendar);
+  if (selectedDate === undefined) {
+    return <>Schedule Not Found</>
+  }
+
+  const isSameDate = (str0: string, str1: string) => {
+    return new Date(str0).toDateString() === new Date(str1).toDateString()
+  };
+  const contents = props.schedules.filter(s => isSameDate(s.from, selectedDate));
+
+  const formatDate = (d: string) => {
+    const time = new Date(d);
+    let hour: string;
+    if (time.getHours() < 10) {
+      hour = "0" + time.getHours().toString();
+    } else {
+      hour = time.getHours().toString();
+    }
+    let minutes: string;
+    if (time.getMinutes() < 10) {
+      minutes = "0" + time.getMinutes().toString();
+    } else {
+      minutes = time.getMinutes().toString();
+    }
+    return hour + ":" + minutes;
+  }
+
+  const handleDeleteSchedule = (s: Schedule) => () => {
+    dispatch(deleteSchedule(s))
+  }
+  
+  if (contents.length === 0) {
+    return <>Schedule Not Found</>
+  } else {
+    return (
+      <Grid
+        container
+        direction="column"
+        justify="center"
+        alignItems="center"
+      >
+        {contents.map(content => 
+          <Grid item>
+            {formatDate(content.from)} - {formatDate(content.to)}
+            <Button
+              variant="outlined"
+              onClick={handleDeleteSchedule(content)}
+              style={{
+                color: "white",
+                backgroundColor: "#696969",
+              }}
+            >
+              delete
+            </Button>
+          </Grid>
+        )}
+      </Grid>
+    )
+  }
 }
 
 const AddButton: React.FC = () => {
