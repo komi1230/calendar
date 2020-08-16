@@ -252,7 +252,7 @@ const ScheduleList: React.FC<ScheduleContentProps> = (props) => {
       >
         {contents.map(content =>
           <Grid item>
-            <Grid 
+            <Grid
               container
               direction="row"
               justify="center"
@@ -311,77 +311,86 @@ const AddButton: React.FC = () => {
   };
 
   return (
-    <>
-      <Button
-        onClick={() => setOpen(!open)}
-        style={{ color: "white", backgroundColor: "#708090" }}
-        size="small"
-      >
-        Add schedule !
-        {open ? <ExpandLess /> : <ExpandMore />}
-      </Button>
-      <Collapse in={open} timeout="auto" disableStrictModeCompat>
-        <Grid
-          container
-          direction="row"
-          justify="center"
-          alignItems="center"
-          spacing={3}
-          style={{ paddingTop: "3px" }}
+    <Grid
+      container
+      direction="column"
+      justify="center"
+      alignItems="center"
+    >
+      <Grid item>
+        <Button
+          onClick={() => setOpen(!open)}
+          style={{ color: "white", backgroundColor: "#708090" }}
+          size="small"
         >
-          <Grid item>
-            <TextField
-              type="time"
-              label="from"
-              value={fromTime}
-              onChange={e => setFromTime(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
-                style: { color: "white" }
-              }}
-              inputProps={{
-                step: 300, // 5 min
-                style: { color: "white" }
-              }}
-              InputProps={{
-                style: { color: "white" }
-              }}
-            />
+          Add schedule !
+        {open ? <ExpandLess /> : <ExpandMore />}
+        </Button>
+      </Grid>
+      <Grid item>
+        <Collapse in={open} timeout="auto" disableStrictModeCompat>
+          <Grid
+            container
+            direction="row"
+            justify="center"
+            alignItems="center"
+            spacing={3}
+            style={{ paddingTop: "3px" }}
+          >
+            <Grid item>
+              <TextField
+                type="time"
+                label="from"
+                value={fromTime}
+                onChange={e => setFromTime(e.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                  style: { color: "white" }
+                }}
+                inputProps={{
+                  step: 300, // 5 min
+                  style: { color: "white" }
+                }}
+                InputProps={{
+                  style: { color: "white" }
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <TextField
+                type="time"
+                label="to"
+                value={toTime}
+                onChange={e => setToTime(e.target.value)}
+                InputLabelProps={{
+                  shrink: true,
+                  style: { color: "white" }
+                }}
+                inputProps={{
+                  step: 300, // 5 min
+                  style: { color: "white" }
+                }}
+                InputProps={{
+                  style: { color: "white" }
+                }}
+              />
+            </Grid>
+            <Grid item>
+              <Button
+                variant="outlined"
+                onClick={handleNewSchedule}
+                style={{
+                  color: "white",
+                  backgroundColor: "#696969",
+                }}
+              >
+                add
+              </Button>
+            </Grid>
           </Grid>
-          <Grid item>
-            <TextField
-              type="time"
-              label="to"
-              value={toTime}
-              onChange={e => setToTime(e.target.value)}
-              InputLabelProps={{
-                shrink: true,
-                style: { color: "white" }
-              }}
-              inputProps={{
-                step: 300, // 5 min
-                style: { color: "white" }
-              }}
-              InputProps={{
-                style: { color: "white" }
-              }}
-            />
-          </Grid>
-          <Grid item>
-            <Button
-              variant="outlined"
-              onClick={handleNewSchedule}
-              style={{
-                color: "white",
-                backgroundColor: "#696969",
-              }}
-            >
-              add
-          </Button>
-          </Grid>
-        </Grid>
-      </Collapse>
-    </>
+        </Collapse>
+      </Grid>
+    </Grid>
   )
 }
 
