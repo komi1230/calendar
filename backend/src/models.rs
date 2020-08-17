@@ -15,7 +15,7 @@ pub struct User {
 impl User {
     pub fn insert(username: String, conn: &PgConnection) -> QueryResult<usize> {
         let user_data = User {
-            username: username,
+            username,
             registerdate: None,
         };
         diesel::insert_into(users::table)
