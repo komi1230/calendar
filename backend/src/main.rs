@@ -6,13 +6,12 @@ use calendar::views::{create_user, schedule_content, search_user};
 #[get("/hello")]
 async fn hello() -> impl Responder {
     println!("Got Access !!");
-    HttpResponse::Ok().body("Hey there!")
+    HttpResponse::Ok().body("Hello World!")
 }
 
 #[actix_rt::main]
 async fn main() -> std::io::Result<()> {
     let pool = make_pool();
-
     let app = move || {
         App::new().service(hello).service(
             web::scope("/")
