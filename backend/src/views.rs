@@ -31,8 +31,8 @@ pub async fn search_user(info: web::Json<UserData>, pool: web::Data<DbPool>) -> 
     let res = Schedule::get_schedule(info.username.clone(), &conn);
 
     match res {
-        Ok(contents) => web::Json(contents),
-        Err(_) => panic!("Not found schedule"),
+        Ok(_) => web::Json(Info { result: true }),
+        Err(_) => web::Json(Info { result: false }),
     }
 }
 
@@ -47,5 +47,62 @@ pub async fn schedule_content(
     match res {
         Ok(contents) => web::Json(contents),
         Err(_) => panic!("Not found schedule"),
+    }
+}
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use actix_web::dev::Service;
+    use actix_web::Error;
+    use actix_web::{http, test, App};
+
+    #[actix_rt::test]
+    async fn test_search_user() -> Result<(), Error> {
+        let mut app = test::init_service(App::new().service(search_user)).await;
+
+        let req = test::TestRequest::post()
+            .uri("/search")
+            .set_json(&UserData {
+                username: "komi".to_owned(),
+            })
+            .to_request();
+
+        let res = app.call(req).await.unwrap();
+
+        assert_eq!(res.status(), http::StatusCode::OK);
+
+        Ok(())
+    }
+
+    #[actix_rt::test]
+    async fn test_create_user() -> Result<(), Error> {
+        let mut app = test::init_service(App::new().service(create_user)).await;
+
+        let req = test::TestRequest::post()
+            .uri("/create")
+            .set_json(&UserData {
+                username: "hoge".to_owned(),
+            })
+            .to_request();
+
+        let res = app.call(req).await.unwrap();
+
+        assert_eq!(res.status(), http::StatusCode::OK);
+
+        Ok(())
+    }
+
+    #[actix_rt::test]
+    async fn test_schedule_content() -> Result<(), Error> {
+        let mut app = test::init_service(App::new().service(schedule_content)).await;
+
+        let req = test::TestRequest::get().uri("/user/komi").to_request();
+
+        let res = app.call(req).await.unwrap();
+
+        assert_eq!(res.status(), http::StatusCode::OK);
+
+        Ok(())
     }
 }
