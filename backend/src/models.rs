@@ -6,10 +6,10 @@ use crate::schema::schedules::dsl::schedules as all_schedules;
 
 use crate::schema::{schedules, users};
 
-#[derive(Deserialize, Serialize, Queryable, Insertable)]
+#[derive(Debug, Deserialize, Serialize, Queryable, Insertable)]
 pub struct User {
-    username: String,
-    registerdate: Option<NaiveDateTime>,
+    pub username: String,
+    pub registerdate: Option<NaiveDateTime>,
 }
 
 impl User {
@@ -34,12 +34,12 @@ impl User {
     }
 }
 
-#[derive(Deserialize, Serialize, Queryable, Insertable)]
+#[derive(Debug, Deserialize, Serialize, Queryable, Insertable)]
 pub struct Schedule {
-    id: i32,
-    username: Option<String>,
-    fromtime: Option<NaiveDateTime>,
-    totime: Option<NaiveDateTime>,
+    pub id: i32,
+    pub username: Option<String>,
+    pub fromtime: Option<NaiveDateTime>,
+    pub totime: Option<NaiveDateTime>,
 }
 
 #[derive(Insertable, Queryable)]
