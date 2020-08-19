@@ -53,13 +53,19 @@ pub async fn schedule_content(
 #[cfg(test)]
 mod tests {
     use super::*;
+    use crate::connection::make_pool;
     use actix_web::dev::Service;
     use actix_web::Error;
-    use actix_web::{http, test, App};
+    use actix_web::{http, test, web, App};
 
     #[actix_rt::test]
     async fn test_search_user() -> Result<(), Error> {
-        let mut app = test::init_service(App::new().service(search_user)).await;
+        let pool = make_pool();
+
+        let mut app = test::init_service(
+            App::new().service(web::scope("/").data(pool.clone()).service(search_user)),
+        )
+        .await;
 
         let req = test::TestRequest::post()
             .uri("/search")
@@ -77,7 +83,12 @@ mod tests {
 
     #[actix_rt::test]
     async fn test_create_user() -> Result<(), Error> {
-        let mut app = test::init_service(App::new().service(create_user)).await;
+        let pool = make_pool();
+
+        let mut app = test::init_service(
+            App::new().service(web::scope("/").data(pool.clone()).service(create_user)),
+        )
+        .await;
 
         let req = test::TestRequest::post()
             .uri("/create")
@@ -95,7 +106,12 @@ mod tests {
 
     #[actix_rt::test]
     async fn test_schedule_content() -> Result<(), Error> {
-        let mut app = test::init_service(App::new().service(schedule_content)).await;
+        let pool = make_pool();
+
+        let mut app = test::init_service(
+            App::new().service(web::scope("/").data(pool.clone()).service(schedule_content)),
+        )
+        .await;
 
         let req = test::TestRequest::get().uri("/user/komi").to_request();
 
