@@ -54,5 +54,5 @@ jobs:
           name: Run unit tests
           command: cargo test
           environment:
-            DATABASE_URL: postgres://circleci-builder:i_love_rust@postgres:5432/calendar
+            DATABASE_URL: postgres://circleci-builder:i_love_rust@postgres:5432/calendar?sslmode=disable
           working_directory: ~/calendar/backend
