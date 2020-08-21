@@ -11,6 +11,7 @@ jobs:
       - image: circleci/postgres:9.6-alpine
         environment:
           POSTGRES_USER: circleci-builder
+          POSTGRES_PASSWORD: i_love_rust
           POSTGRES_DB: calendar
 
     working_directory: /home/circleci/calendar/
@@ -53,5 +54,5 @@ jobs:
           name: Run unit tests
           command: cargo test
           environment:
-            DATABASE_URL: postgres://circleci-builder@postgres:5432/calendar
+            DATABASE_URL: postgres://circleci-builder:i_love_rust@postgres:5432/calendar
           working_directory: ~/calendar/backend
