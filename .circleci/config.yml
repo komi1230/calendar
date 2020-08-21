@@ -36,10 +36,13 @@ jobs:
           name: Build cargo project
           command: cargo build
           working_directory: ~/calendar/backend
-#      - run:
-#          name: lint
-#          command: cargo clippy -- -D warnings
-#          working_directory: ~/calendar/backend
+      - run:
+          name: Install diesel command
+          command: cargo install diesel_cli
+      - run:
+          name: Setup .env file
+          command: echo "DATABASE_URL=postgres://circleci-builder:i_love_rust@postgres:5432/calendar" > .env
+          working_directory: ~/calendar/backend
       - run:
           name: Waiting for Postgres to be ready
           command: |
@@ -50,6 +53,18 @@ jobs:
               sleep 1
             done
             echo Failed waiting for Postgres && exit 1
+      - run:
+          name: Setup diesel
+          command: diesel setup
+          working_directory: ~/calendar/backend
+      - run:
+          name: Migration
+          command: diesel migration generate calendar
+          working_directory: ~/calendar/backend
+#      - run:
+#          name: lint
+#          command: cargo clippy -- -D warnings
+#          working_directory: ~/calendar/backend
       - run:
           name: Run unit tests
           command: cargo test
