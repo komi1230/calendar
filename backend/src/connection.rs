@@ -14,3 +14,16 @@ pub fn make_pool() -> DbPool {
         .build(manager)
         .expect("Failed to create pool.")
 }
+
+#[cfg(test)]
+mod tests {
+    use super::*;
+    use actix_web::Error;
+
+    #[test]
+    fn test_make_pool() -> Result<(), Error> {
+        let _pool = make_pool();
+
+        Ok(())
+    }
+}
