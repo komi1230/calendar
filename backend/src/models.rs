@@ -49,9 +49,9 @@ pub struct Schedule {
 #[derive(Insertable, Queryable, Deserialize, Serialize)]
 #[table_name = "schedules"]
 pub struct Content {
-    username: String,
-    fromtime: NaiveDateTime,
-    totime: NaiveDateTime,
+    pub username: String,
+    pub fromtime: NaiveDateTime,
+    pub totime: NaiveDateTime,
 }
 
 impl Schedule {
