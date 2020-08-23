@@ -23,6 +23,10 @@ impl User {
             .execute(conn)
     }
 
+    pub fn delete(username: String, conn: &PgConnection) -> QueryResult<usize> {
+        diesel::delete(users::table.filter(users::username.eq(username))).execute(conn)
+    }
+
     pub fn search_outdated(deadline: NaiveDateTime, conn: &PgConnection) -> QueryResult<Vec<User>> {
         users::table
             .filter(users::registerdate.le(deadline))
@@ -44,6 +48,7 @@ pub struct Schedule {
 
 #[derive(Insertable, Queryable)]
 #[table_name = "schedules"]
+
 pub struct Content {
     username: String,
     fromtime: NaiveDateTime,

@@ -50,6 +50,17 @@ pub async fn schedule_content(
     }
 }
 
+#[post("/delete/user")]
+pub async fn delete_user(info: web::Json<UserData>, pool: web::Data<DbPool>) -> impl Responder {
+    let conn = pool.get().expect("couldn't get db connection from pool");
+    let res = User::delete(info.username.clone(), &conn);
+
+    match res {
+        Ok(_) => web::Json(Info { result: true }),
+        Err(_) => web::Json(Info { result: false }),
+    }
+}
+
 #[cfg(test)]
 mod tests {
     use super::*;
@@ -80,28 +91,46 @@ mod tests {
         Ok(())
     }
 
-    // #[actix_rt::test]
-    // async fn test_create_user() -> Result<(), Error> {
-    //     let pool = make_pool();
+    #[actix_rt::test]
+    async fn test_create_delete_user() -> Result<(), Error> {
+        let pool = make_pool();
 
-    //     let mut app = test::init_service(
-    //         App::new().service(web::scope("/").data(pool.clone()).service(create_user)),
-    //     )
-    //     .await;
+        let mut app = test::init_service(
+            App::new().service(
+                web::scope("/")
+                    .data(pool.clone())
+                    .service(delete_user)
+                    .service(create_user),
+            ),
+        )
+        .await;
 
-    //     let req = test::TestRequest::post()
-    //         .uri("/create")
-    //         .set_json(&UserData {
-    //             username: "hoge".to_owned(),
-    //         })
-    //         .to_request();
+        // Create User
+        let req_create = test::TestRequest::post()
+            .uri("/create")
+            .set_json(&UserData {
+                username: "hoge".to_owned(),
+            })
+            .to_request();
 
-    //     let res: Info = test::read_response_json(&mut app, req).await;
+        let res_create: Info = test::read_response_json(&mut app, req_create).await;
 
-    //     assert_eq!(res.result, true);
+        assert_eq!(res_create.result, true);
 
-    //     Ok(())
-    // }
+        // Delete User
+        let req_delete = test::TestRequest::post()
+            .uri("/delete/user")
+            .set_json(&UserData {
+                username: "hoge".to_owned(),
+            })
+            .to_request();
+
+        let res_delete: Info = test::read_response_json(&mut app, req_delete).await;
+
+        assert_eq!(res_delete.result, true);
+
+        Ok(())
+    }
 
     #[actix_rt::test]
     async fn test_schedule_content() -> Result<(), Error> {
