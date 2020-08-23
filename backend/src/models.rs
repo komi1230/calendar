@@ -46,9 +46,8 @@ pub struct Schedule {
     pub totime: Option<NaiveDateTime>,
 }
 
-#[derive(Insertable, Queryable)]
+#[derive(Insertable, Queryable, Deserialize, Serialize)]
 #[table_name = "schedules"]
-
 pub struct Content {
     username: String,
     fromtime: NaiveDateTime,
