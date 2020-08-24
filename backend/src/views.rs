@@ -42,7 +42,7 @@ pub async fn search_user(info: web::Json<UserData>, pool: web::Data<DbPool>) -> 
     let res = Schedule::get_schedule(info.username.clone(), &conn);
 
     match res {
-        Ok(content) if content.len() > 0 => web::Json(Info { result: true }),
+        Ok(content) if !content.is_empty() => web::Json(Info { result: true }),
         _ => web::Json(Info { result: false }),
     }
 }
