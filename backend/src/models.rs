@@ -77,4 +77,8 @@ impl Schedule {
         )
         .execute(conn)
     }
+
+    pub fn delete_all(username: String, conn: &PgConnection) -> QueryResult<usize> {
+        diesel::delete(all_schedules.filter(schedules::username.eq(username))).execute(conn)
+    }
 }
