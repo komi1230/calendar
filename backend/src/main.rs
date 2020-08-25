@@ -1,7 +1,9 @@
 use actix_web::{get, middleware, web, App, HttpResponse, HttpServer, Responder};
 
 use calendar::connection::make_pool;
-use calendar::views::{create_user, schedule_content, search_user};
+use calendar::views::{
+    create_schedule, create_user, delete_schedule, delete_user, schedule_content, search_user,
+};
 
 #[get("/hello")]
 async fn hello() -> impl Responder {
@@ -23,8 +25,11 @@ async fn main() -> std::io::Result<()> {
                 web::scope("/")
                     .data(pool.clone())
                     .service(create_user)
+                    .service(create_schedule)
                     .service(search_user)
-                    .service(schedule_content),
+                    .service(schedule_content)
+                    .service(delete_user)
+                    .service(delete_schedule),
             )
     };
 
