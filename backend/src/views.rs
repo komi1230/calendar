@@ -64,6 +64,7 @@ pub async fn schedule_content(
 #[post("/delete/user")]
 pub async fn delete_user(info: web::Json<UserData>, pool: web::Data<DbPool>) -> impl Responder {
     let conn = pool.get().expect("couldn't get db connection from pool");
+    let _ = Schedule::delete_all(info.username.clone(), &conn);
     let res = User::delete(info.username.clone(), &conn);
 
     match res {
